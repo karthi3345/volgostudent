@@ -211,13 +211,13 @@ function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-   const navItems = [
-     { name: 'Home', href: '#home' },
-     { name: 'About', href: '#about' },
-     { name: 'Students', href: '#students' },
-     { name: 'Blogs', href: '#blogs' },
-     { name: 'Contact', href: '#contact' },
-   ]
+    const navItems = [
+      { name: 'About', href: '#about' },
+      { name: 'Blogs', href: '#blogs' },
+      { name: 'Contact', href: '#contact' },
+      { name: 'Home', href: '#home' },
+      { name: 'Students', href: '#students' },
+    ]
 
   return (
      <motion.nav
@@ -316,40 +316,26 @@ function HeroSection() {
         <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#FFD700]/10 rounded-full blur-2xl animate-pulse delay-500" />
       </div>
 
-      <motion.div style={{ y, opacity }} className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-6"
-        >
-          <span className="inline-block px-4 py-2 bg-[#FFC800]/20 border border-[#FFC800]/30 rounded-full text-[#FFC800] text-sm font-medium backdrop-blur-sm">
-            Empowering Indian Students Since 2025
-          </span>
-        </motion.div>
+       <motion.div style={{ y, opacity }} className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+         <motion.div
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8 }}
+           className="mb-6"
+         >
+           <span className="inline-block px-4 py-2 bg-[#FFC800]/20 border border-[#FFC800]/30 rounded-full text-[#FFC800] text-sm font-medium backdrop-blur-sm">
+             Empowering Indian Students Since 2025
+           </span>
+         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
-        >
-          Your Path to{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFC800] via-[#FFD700] to-[#FFA500]">
-            Success
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed"
-        >
-          VolGO is your ultimate partner in navigating the journey of higher education in France. 
-          We specialize in providing tailored consultancy services to Indian students, helping you 
-          unlock opportunities in prestigious institutions.
-        </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+          >
+            Our on-ground experience in France is your path to academic journey
+          </motion.h1>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -612,35 +598,35 @@ function StudentsSection() {
 
 // Blogs Section
 function BlogsSection() {
-  const blogs = [
-    {
-      id: 1,
-      title: "Why Choose France for Higher Education?",
-      excerpt: "Discover the benefits of studying in France, from world-class universities to rich cultural experiences and excellent career opportunities.",
-      image: "/blogs/france-education.jpg",
-      date: "May 10, 2026",
-      readTime: "5 min read",
-      tags: ["Study Abroad", "France", "Education"]
-    },
-    {
-      id: 2,
-      title: "Top 10 Universities in France for Indian Students",
-      excerpt: "Explore the best French universities that offer excellent programs for international students, including admission requirements and scholarship opportunities.",
-      image: "/blogs/top-universities.jpg",
-      date: "May 5, 2026",
-      readTime: "7 min read",
-      tags: ["University Guide", "Admissions", "Rankings"]
-    },
-    {
-      id: 3,
-      title: "Student Life in France: What to Expect",
-      excerpt: "Learn about accommodation, cost of living, cultural adaptation, and work opportunities for international students in France.",
-      image: "/blogs/student-life.jpg",
-      date: "April 28, 2026",
-      readTime: "6 min read",
-      tags: ["Student Life", "Cost of Living", "Culture"]
-    }
-  ];
+   const blogs = [
+     {
+       id: 1,
+       title: "Why Choose France for Higher Education?",
+       excerpt: "Discover the benefits of studying in France, from world-class universities to rich cultural experiences and excellent career opportunities.",
+       image: "/images/unnamed(10).png",
+       date: "May 10, 2026",
+       readTime: "5 min read",
+       tags: ["Study Abroad", "France", "Education"]
+     },
+     {
+       id: 2,
+       title: "Top 10 Universities in France for Indian Students",
+       excerpt: "Explore the best French universities that offer excellent programs for international students, including admission requirements and scholarship opportunities.",
+       image: "/images/unnamed(11).png",
+       date: "May 5, 2026",
+       readTime: "7 min read",
+       tags: ["University Guide", "Admissions", "Rankings"]
+     },
+     {
+       id: 3,
+       title: "Student Life in France: What to Expect",
+       excerpt: "Learn about accommodation, cost of living, cultural adaptation, and work opportunities for international students in France.",
+       image: "/images/unnamed(12).png",
+       date: "April 28, 2026",
+       readTime: "6 min read",
+       tags: ["Student Life", "Cost of Living", "Culture"]
+     }
+   ];
 
   return (
     <section id="blogs" className="relative py-24 bg-gradient-to-b from-black to-gray-900 overflow-hidden">
@@ -690,10 +676,10 @@ function BlogsSection() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Calendar className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-400">{blog.date}</span>
-                  </div>
+                   <div className="flex items-center gap-2 mb-2">
+                     <Calendar className="h-4 w-4 text-gray-400" aria-label="Date" />
+                     <span className="text-sm text-gray-400">{blog.date}</span>
+                   </div>
                   <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 hover:text-[#FFC800] transition-colors">
                     {blog.title}
                   </h3>
