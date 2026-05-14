@@ -22,7 +22,8 @@ import {
   Heart,
   CheckCircle,
   Menu,
-  X
+  X,
+  Calendar
 } from 'lucide-react'
 
 // Particle types for educational theme
@@ -210,56 +211,54 @@ function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Students', href: '#students' },
-    { name: 'Contact', href: '#contact' },
-  ]
+   const navItems = [
+     { name: 'Home', href: '#home' },
+     { name: 'About', href: '#about' },
+     { name: 'Students', href: '#students' },
+     { name: 'Blogs', href: '#blogs' },
+     { name: 'Contact', href: '#contact' },
+   ]
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-black/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
-      }`}
-    >
+     <motion.nav
+       initial={{ y: -100 }}
+       animate={{ y: 0 }}
+       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+         isScrolled ? 'bg-white shadow-lg' : 'bg-white'
+       }`}
+     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <motion.div 
-            className="flex items-center gap-3"
-            whileHover={{ scale: 1.02 }}
-          >
-            <img 
-              src="/logo.png" 
-              alt="VolGO Logo" 
-              className="h-12 w-auto"
-            />
-            <span className="text-2xl font-bold text-white">
-              Vol<span className="text-[#FFC800]">GO</span>
-            </span>
-          </motion.div>
+           <motion.div 
+             className="flex items-center gap-3"
+             whileHover={{ scale: 1.02 }}
+           >
+             <img 
+               src="/logo.png" 
+               alt="VolGO Logo" 
+               className="h-16 w-auto"
+             />
+           </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                className="text-white/80 hover:text-[#FFC800] transition-colors font-medium relative group"
-                whileHover={{ y: -2 }}
-              >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFC800] transition-all group-hover:w-full" />
-              </motion.a>
-            ))}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-semibold px-6">
-                Get Started
-              </Button>
-            </motion.div>
-          </div>
+           {/* Desktop Navigation */}
+           <div className="hidden md:flex items-center gap-8">
+             {navItems.map((item) => (
+               <motion.a
+                 key={item.name}
+                 href={item.href}
+                 className="text-black/80 hover:text-[#FFC800] transition-colors font-medium relative group"
+                 whileHover={{ y: -2 }}
+               >
+                 {item.name}
+                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFC800] transition-all group-hover:w-full" />
+               </motion.a>
+             ))}
+             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+               <Button className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-semibold px-6">
+                 Get Started
+               </Button>
+             </motion.div>
+           </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -271,33 +270,33 @@ function Navigation() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/95 backdrop-blur-md"
-          >
-            <div className="px-4 py-4 space-y-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="block text-white/80 hover:text-[#FFC800] transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </a>
-              ))}
-              <Button className="w-full bg-[#FFC800] hover:bg-[#FFD700] text-black font-semibold">
-                Get Started
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+             {/* Mobile Menu */}
+             <AnimatePresence>
+               {isMobileMenuOpen && (
+                 <motion.div
+                   initial={{ opacity: 0, height: 0 }}
+                   animate={{ opacity: 1, height: 'auto' }}
+                   exit={{ opacity: 0, height: 0 }}
+                   className="md:hidden bg-white/95 backdrop-blur-md"
+                 >
+                   <div className="px-4 py-4 space-y-4">
+                     {navItems.map((item) => (
+                       <a
+                         key={item.name}
+                         href={item.href}
+                         className="block text-black/80 hover:text-[#FFC800] transition-colors font-medium py-2"
+                         onClick={() => setIsMobileMenuOpen(false)}
+                       >
+                         {item.name}
+                       </a>
+                     ))}
+                     <Button className="w-full bg-[#FFC800] hover:bg-[#FFD700] text-black font-semibold">
+                       Get Started
+                     </Button>
+                   </div>
+                 </motion.div>
+               )}
+             </AnimatePresence>
     </motion.nav>
   )
 }
@@ -611,6 +610,119 @@ function StudentsSection() {
   )
 }
 
+// Blogs Section
+function BlogsSection() {
+  const blogs = [
+    {
+      id: 1,
+      title: "Why Choose France for Higher Education?",
+      excerpt: "Discover the benefits of studying in France, from world-class universities to rich cultural experiences and excellent career opportunities.",
+      image: "/blogs/france-education.jpg",
+      date: "May 10, 2026",
+      readTime: "5 min read",
+      tags: ["Study Abroad", "France", "Education"]
+    },
+    {
+      id: 2,
+      title: "Top 10 Universities in France for Indian Students",
+      excerpt: "Explore the best French universities that offer excellent programs for international students, including admission requirements and scholarship opportunities.",
+      image: "/blogs/top-universities.jpg",
+      date: "May 5, 2026",
+      readTime: "7 min read",
+      tags: ["University Guide", "Admissions", "Rankings"]
+    },
+    {
+      id: 3,
+      title: "Student Life in France: What to Expect",
+      excerpt: "Learn about accommodation, cost of living, cultural adaptation, and work opportunities for international students in France.",
+      image: "/blogs/student-life.jpg",
+      date: "April 28, 2026",
+      readTime: "6 min read",
+      tags: ["Student Life", "Cost of Living", "Culture"]
+    }
+  ];
+
+  return (
+    <section id="blogs" className="relative py-24 bg-gradient-to-b from-black to-gray-900 overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#FFC800]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#FFA500]/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <span className="text-[#FFC800] font-semibold text-lg mb-4 block">Our Blog</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+            Latest Insights & Guides
+          </h2>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+            Stay updated with expert advice, tips, and information about studying in France.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {blogs.map((blog) => (
+            <motion.div
+              key={blog.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: blog.id * 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#FFC800]/30 transition-all duration-300 overflow-hidden group">
+                <div className="relative">
+                  <img
+                    src={blog.image}
+                    alt={blog.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-4">
+                    <span className="text-xs text-[#FFC800] font-medium bg-black/50 rounded-full px-2 py-1">
+                      {blog.tags[0]}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Calendar className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm text-gray-400">{blog.date}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 hover:text-[#FFC800] transition-colors">
+                    {blog.title}
+                  </h3>
+                  <p className="text-gray-400 mb-4 line-clamp-3">
+                    {blog.excerpt}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {blog.tags.map((tag, index) => (
+                      <span key={index} className="text-xs text-[#FFC800]/50 bg-black/20 rounded px-2 py-1">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-400">{blog.readTime}</span>
+                    <a href="#" className="text-sm text-[#FFC800] font-medium hover:text-[#FFD700] transition-colors">
+                      Read More →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Contact Section
 function ContactSection() {
   const [formData, setFormData] = useState({
@@ -810,16 +922,17 @@ function Footer() {
 
 // Main Page Component
 export default function Home() {
-  return (
-    <main className="relative bg-black min-h-screen">
-      <ParticleField />
-      <Navigation />
-      <HeroSection />
-      <StatsSection />
-      <AboutSection />
-      <StudentsSection />
-      <ContactSection />
-      <Footer />
-    </main>
-  )
+   return (
+     <main className="relative bg-black min-h-screen">
+       <ParticleField />
+       <Navigation />
+       <HeroSection />
+       <StatsSection />
+       <AboutSection />
+       <StudentsSection />
+       <BlogsSection />
+       <ContactSection />
+       <Footer />
+     </main>
+   )
 }
