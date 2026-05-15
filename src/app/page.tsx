@@ -1105,12 +1105,52 @@ function AirplaneScroll() {
   )
 }
 
+function CloudParallax() {
+  const { scrollY } = useScroll()
+
+  const layers = [
+    { speed: 0.15, opacity: 0.06, scale: 1.8, positions: ['left-[5%]', 'left-[55%]', 'left-[30%]', 'left-[70%]'] },
+    { speed: 0.35, opacity: 0.1, scale: 1.3, positions: ['left-[10%]', 'left-[60%]', 'left-[20%]', 'left-[50%]'] },
+    { speed: 0.55, opacity: 0.14, scale: 1, positions: ['left-[15%]', 'left-[65%]', 'left-[40%]', 'left-[80%]'] },
+  ]
+
+  return (
+    <div className="fixed inset-0 z-30 pointer-events-none overflow-hidden">
+      {layers.map((layer, layerIndex) => {
+        const rawY = useTransform(scrollY, [0, 6000], [0, -(scrollY.get() !== undefined ? 6000 * layer.speed : 0)])
+        const y = useSpring(rawY, { stiffness: 50, damping: 30 })
+        const topOffsets = [100, 900, 2000, 3200]
+
+        return (
+          <motion.div key={layerIndex} style={{ y }} className="absolute inset-x-0">
+            {layer.positions.map((pos, i) => (
+              <div
+                key={i}
+                className={`absolute ${pos}`}
+                style={{ top: topOffsets[i], opacity: layer.opacity }}
+              >
+                <img
+                  src="/images/cloud.png"
+                  alt=""
+                  className="object-contain"
+                  style={{ transform: `scale(${layer.scale})` }}
+                />
+              </div>
+            ))}
+          </motion.div>
+        )
+      })}
+    </div>
+  )
+}
+
 // Main Page Component
 export default function Home() {
    return (
       <main className="relative bg-black min-h-screen">
         <ParticleField />
         <AirplaneScroll />
+        <CloudParallax />
         <Navigation />
         <HeroSection />
         <PathToSuccessSection />
