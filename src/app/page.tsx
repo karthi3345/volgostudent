@@ -1094,7 +1094,7 @@ function AirplaneScroll() {
   return (
     <motion.div
       style={{ y, rotate: rotation, opacity }}
-      className="fixed right-4 md:right-8 z-40 pointer-events-none"
+      className="fixed right-4 md:right-8 z-[5] pointer-events-none"
     >
       <img
         src="/images/airplane-top.png"
