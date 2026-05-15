@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -1079,12 +1079,39 @@ function Footer() {
   )
 }
 
+function AirplaneScroll() {
+  const { scrollY } = useScroll()
+
+  const rawY = useTransform(scrollY, [0, 6000], [800, -600])
+  const y = useSpring(rawY, { stiffness: 80, damping: 30 })
+
+  const rawRotation = useTransform(scrollY, [0, 6000], [-45, -45])
+  const rotation = useSpring(rawRotation, { stiffness: 80, damping: 30 })
+
+  const rawOpacity = useTransform(scrollY, [0, 300, 4500, 5500], [0, 1, 1, 0])
+  const opacity = useSpring(rawOpacity, { stiffness: 80, damping: 30 })
+
+  return (
+    <motion.div
+      style={{ y, rotate: rotation, opacity }}
+      className="fixed right-4 md:right-8 z-40 pointer-events-none"
+    >
+      <img
+        src="/images/airplane-top.png"
+        alt="Airplane"
+        className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-[0_0_25px_rgba(255,200,0,0.4)]"
+      />
+    </motion.div>
+  )
+}
+
 // Main Page Component
 export default function Home() {
    return (
-     <main className="relative bg-black min-h-screen">
-       <ParticleField />
-       <Navigation />
+      <main className="relative bg-black min-h-screen">
+        <ParticleField />
+        <AirplaneScroll />
+        <Navigation />
         <HeroSection />
         <PathToSuccessSection />
         <StatsSection />
