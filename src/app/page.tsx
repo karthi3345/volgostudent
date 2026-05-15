@@ -374,6 +374,41 @@ function HeroSection() {
   )
 }
 
+function PathToSuccessSection() {
+  return (
+    <section className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-1/3 left-1/4 w-80 h-80 bg-[#FFC800]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-[#FFA500]/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-4xl md:text-6xl font-bold text-[#FFC800] mb-4 leading-tight">
+            YOUR PATH TO SUCCESS...
+          </h2>
+          <h3 className="text-2xl md:text-3xl font-semibold text-white mb-10">
+            Empowering Indian Students
+          </h3>
+          <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-4xl mx-auto">
+            VolGO is your ultimate partner in navigating the journey of higher education in France. 
+            We specialize in providing tailored consultancy services to Indian students, helping you 
+            unlock opportunities in prestigious institutions. Our dedicated team offers expert guidance, 
+            comprehensive resources, and personalized support to ensure you achieve your academic dreams 
+            abroad. With VolGO, you're not just pursuing education; you're embarking on a transformative 
+            adventure that shapes your future.
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 // Stats Section
 function StatsSection() {
   const stats = [
@@ -591,6 +626,114 @@ function StudentsSection() {
             </motion.div>
           ))}
         </motion.div>
+      </div>
+    </section>
+  )
+}
+
+function ReasonsToChooseFranceSection() {
+  const reasons = [
+    'World-Class Education',
+    'Affordable Tuition Fees',
+    'International Students Scholarships',
+    'Vibrant Student Life',
+    'Rich Cultural Heritage',
+    'Multilingual Opportunities',
+    'Strong Career Prospects',
+    'International Recognition',
+    'Post-Study Work Opportunities',
+    'Quality of Life',
+  ]
+
+  return (
+    <section className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFC800]/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FFA500]/8 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-14"
+        >
+          <h2 className="text-3xl md:text-5xl font-bold text-[#FFC800] mb-4 leading-tight">
+            REASONS TO CHOOSE FRANCE FOR HIGHER STUDIES...
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+          {reasons.map((reason, index) => (
+            <motion.div
+              key={reason}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.06 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4"
+            >
+              <div className="w-3 h-3 rounded-full bg-[#FFC800] shrink-0" />
+              <span className="text-gray-300 text-lg font-medium">{reason}</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ReasonsToChooseVolgoSection() {
+  const reasons = [
+    'Check Eligibility and Requirements',
+    'Research and Choosing Program',
+    'Student and Parents Counselling',
+    'Complete Application Process',
+    'Secure Admission and Accommodation',
+    'Financial Planning and Student Visa',
+    'Pre-Departure and Post Arrival in France',
+    'Integrate into French Administration',
+    'Organised Academic Schedules',
+    'Explore Opportunities and Future',
+  ]
+
+  return (
+    <section className="relative py-24 bg-gradient-to-b from-black to-gray-900 overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-0 w-80 h-80 bg-[#FFC800]/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-[#FFA500]/8 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-14"
+        >
+          <h2 className="text-3xl md:text-5xl font-bold text-[#FFC800] mb-4 leading-tight">
+            REASONS TO CHOOSE VOLGO FOR STUDIES IN FRANCE...
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
+          {reasons.map((reason, index) => (
+            <motion.div
+              key={reason}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.06 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4"
+            >
+              <div className="w-3 h-3 rounded-full bg-[#FFC800] shrink-0" />
+              <span className="text-gray-300 text-lg font-medium">{reason}</span>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -885,20 +1028,50 @@ function Footer() {
   return (
     <footer className="relative bg-black border-t border-white/10 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="VolGO Logo" className="h-10 w-auto" />
-            <span className="text-xl font-bold text-white">
-              Vol<span className="text-[#FFC800]">GO</span>
-            </span>
+        <div className="grid md:grid-cols-4 gap-10 mb-12">
+          <div>
+            <img src="/logo.png" alt="VolGO Logo" className="h-20 w-auto" />
           </div>
-          <p className="text-gray-500 text-center">
-            © 2025 VolGO Student Consultancy. All rights reserved.
+
+          <div>
+            <h4 className="text-[#FFC800] font-bold text-lg mb-4">Registered Office</h4>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              VolGO Travel (OPC) Private Limited,<br />
+              36C/5, ST-2, Madurai Main Road,<br />
+              Nilakkottai, Dindigul 624 208<br />
+              Tamil Nadu, India
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-[#FFC800] font-bold text-lg mb-4">Contact Us</h4>
+            <div className="text-gray-400 text-sm space-y-1">
+              <p><span className="text-gray-500">Mobile</span><span className="mx-2">:</span>+91 877 810 877 0</p>
+              <p><span className="text-gray-500">Phone</span><span className="mx-2">:</span>+91 45 43 233 811</p>
+              <p><span className="text-gray-500">Email</span><span className="mx-2">:</span>Student@volgo-india.com</p>
+              <p><span className="text-gray-500">Web</span><span className="mx-3">:</span>www.volgo-india.com</p>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-[#FFC800] font-bold text-lg mb-4">Working Hours</h4>
+            <div className="text-gray-400 text-sm leading-relaxed">
+              <p>Monday to Saturday</p>
+              <p>9:30 AM to 5:50 PM</p>
+              <p className="text-gray-500 text-xs mt-2">*Except India Public Holiday</p>
+              <p className="text-gray-500 text-xs">Video Conference is available</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-gray-500 text-center text-sm">
+            © ALL RIGHTS RESERVED BY VOLGO TRAVEL OPC PRIVATE LIMITED @ 2025
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors">Privacy</a>
-            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors">Terms</a>
-            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors">Support</a>
+            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors text-sm">Privacy</a>
+            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors text-sm">Terms</a>
+            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors text-sm">Support</a>
           </div>
         </div>
       </div>
@@ -912,11 +1085,14 @@ export default function Home() {
      <main className="relative bg-black min-h-screen">
        <ParticleField />
        <Navigation />
-       <HeroSection />
-       <StatsSection />
+        <HeroSection />
+        <PathToSuccessSection />
+        <StatsSection />
        <AboutSection />
-       <StudentsSection />
-       <BlogsSection />
+        <StudentsSection />
+        <ReasonsToChooseFranceSection />
+        <ReasonsToChooseVolgoSection />
+        <BlogsSection />
        <ContactSection />
        <Footer />
      </main>
