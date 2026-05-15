@@ -610,17 +610,17 @@ function StudentsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+          className="mt-16 flex justify-center items-center gap-3"
         >
           {['/images/unnamed(11).png', '/images/unnamed(12).png', '/images/unnamed(13).png', '/images/unnamed(10).png'].map((src, index) => (
             <motion.div
               key={index}
-              whileHover={{ scale: 1.05 }}
-              className="aspect-square rounded-2xl overflow-hidden border border-white/10"
+              whileHover={{ scale: 1.1 }}
+              className="w-8 h-8 rounded-md overflow-hidden border border-white/10"
             >
               <img
                 src={src}
-                alt={`Student life in France ${index + 1}`}
+                alt={`Social ${index + 1}`}
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -1026,16 +1026,16 @@ function ContactSection() {
 // Footer
 function Footer() {
   return (
-    <footer className="relative bg-black border-t border-white/10 py-12">
+    <footer className="relative bg-white border-t border-gray-200 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10 mb-12">
           <div>
-            <img src="/logo.png" alt="VolGO Logo" className="h-20 w-auto" />
+            <img src="/logo.png" alt="VolGO Logo" className="h-36 w-auto" />
           </div>
 
           <div>
-            <h4 className="text-[#FFC800] font-bold text-lg mb-4">Registered Office</h4>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <h4 className="text-[#B8860B] font-bold text-lg mb-4">Registered Office</h4>
+            <p className="text-gray-700 text-sm leading-relaxed">
               VolGO Travel (OPC) Private Limited,<br />
               36C/5, ST-2, Madurai Main Road,<br />
               Nilakkottai, Dindigul 624 208<br />
@@ -1044,8 +1044,8 @@ function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[#FFC800] font-bold text-lg mb-4">Contact Us</h4>
-            <div className="text-gray-400 text-sm space-y-1">
+            <h4 className="text-[#B8860B] font-bold text-lg mb-4">Contact Us</h4>
+            <div className="text-gray-700 text-sm space-y-1">
               <p><span className="text-gray-500">Mobile</span><span className="mx-2">:</span>+91 877 810 877 0</p>
               <p><span className="text-gray-500">Phone</span><span className="mx-2">:</span>+91 45 43 233 811</p>
               <p><span className="text-gray-500">Email</span><span className="mx-2">:</span>Student@volgo-india.com</p>
@@ -1054,8 +1054,8 @@ function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[#FFC800] font-bold text-lg mb-4">Working Hours</h4>
-            <div className="text-gray-400 text-sm leading-relaxed">
+            <h4 className="text-[#B8860B] font-bold text-lg mb-4">Working Hours</h4>
+            <div className="text-gray-700 text-sm leading-relaxed">
               <p>Monday to Saturday</p>
               <p>9:30 AM to 5:50 PM</p>
               <p className="text-gray-500 text-xs mt-2">*Except India Public Holiday</p>
@@ -1064,14 +1064,14 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-center text-sm">
             © ALL RIGHTS RESERVED BY VOLGO TRAVEL OPC PRIVATE LIMITED @ 2025
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors text-sm">Privacy</a>
-            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors text-sm">Terms</a>
-            <a href="#" className="text-gray-400 hover:text-[#FFC800] transition-colors text-sm">Support</a>
+            <a href="#" className="text-gray-600 hover:text-[#B8860B] transition-colors text-sm">Privacy</a>
+            <a href="#" className="text-gray-600 hover:text-[#B8860B] transition-colors text-sm">Terms</a>
+            <a href="#" className="text-gray-600 hover:text-[#B8860B] transition-colors text-sm">Support</a>
           </div>
         </div>
       </div>
