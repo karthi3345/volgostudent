@@ -44,6 +44,8 @@ function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const particlesRef = useRef<Particle[]>([])
   const animationRef = useRef<number>()
+  const mouseRef = useRef({ x: -1000, y: -1000 })
+  const scrollRef = useRef({ lastY: 0 })
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -58,6 +60,17 @@ function ParticleField() {
     }
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY }
+    }
+
+    const handleMouseLeave = () => {
+      mouseRef.current = { x: -1000, y: -1000 }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseleave', handleMouseLeave)
 
     // Initialize particles
     const colors = ['#FFC800', '#FFD700', '#FFA500', '#FF8C00', '#FFE4B5']
@@ -101,9 +114,34 @@ function ParticleField() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+      // Calculate scroll delta
+      const currentScrollY = window.scrollY
+      const scrollDelta = currentScrollY - scrollRef.current.lastY
+      scrollRef.current.lastY = currentScrollY
+
       particlesRef.current.forEach(particle => {
+        // Apply scroll delta drift (parallax effect)
+        if (Math.abs(scrollDelta) > 0.1) {
+          particle.y -= scrollDelta * 0.15
+        }
+
         particle.x += particle.speedX
         particle.y += particle.speedY
+
+        // Mouse reaction (repulsion and glow)
+        if (mouseRef.current.x !== -1000) {
+          const dx = particle.x - mouseRef.current.x
+          const dy = particle.y - mouseRef.current.y
+          const dist = Math.hypot(dx, dy)
+          const reactionRadius = 180
+
+          if (dist < reactionRadius && dist > 1) {
+            const force = (reactionRadius - dist) / reactionRadius
+            const angle = Math.atan2(dy, dx)
+            particle.x += Math.cos(angle) * force * 2.5
+            particle.y += Math.sin(angle) * force * 2.5
+          }
+        }
 
         // Wrap around edges
         if (particle.x < 0) particle.x = canvas.width
@@ -142,6 +180,8 @@ function ParticleField() {
 
     return () => {
       window.removeEventListener('resize', resizeCanvas)
+      window.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseleave', handleMouseLeave)
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
@@ -151,8 +191,8 @@ function ParticleField() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.6 }}
+      className="fixed inset-0 pointer-events-none z-[100]"
+      style={{ opacity: 0.55 }}
     />
   )
 }
@@ -198,6 +238,85 @@ function AnimatedCounter({ end, duration = 2, suffix = '' }: { end: number; dura
   return <span ref={ref}>{count}{suffix}</span>
 }
 
+// Custom Hook to manage dynamic mouse + scroll glow effect relative to section
+function useMouseGlow() {
+  const ref = useRef<HTMLDivElement>(null)
+  const mouseScreenRef = useRef({ x: -1000, y: -1000 })
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const updateGlow = () => {
+      if (mouseScreenRef.current.x === -1000) return
+      const rect = el.getBoundingClientRect()
+      const x = mouseScreenRef.current.x - rect.left
+      const y = mouseScreenRef.current.y - rect.top
+      el.style.setProperty('--mouse-x', `${x}px`)
+      el.style.setProperty('--mouse-y', `${y}px`)
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseScreenRef.current = { x: e.clientX, y: e.clientY }
+      updateGlow()
+    }
+
+    const handleScroll = () => {
+      updateGlow()
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  return ref
+}
+
+// Background planes moving randomly
+function BackgroundPlanes() {
+  const planes = [
+    { id: 1, x: ['-20vw', '120vw'], y: ['15vh', '15vh'], rotate: 90, duration: 35, delay: 0, scale: 0.08, opacity: 0.5 },
+    { id: 2, x: ['120vw', '-20vw'], y: ['45vh', '45vh'], rotate: 270, duration: 42, delay: 8, scale: 0.06, opacity: 0.45 },
+    { id: 3, x: ['-20vw', '120vw'], y: ['70vh', '70vh'], rotate: 90, duration: 38, delay: 15, scale: 0.07, opacity: 0.5 },
+    { id: 4, x: ['120vw', '-20vw'], y: ['85vh', '85vh'], rotate: 270, duration: 45, delay: 22, scale: 0.05, opacity: 0.4 }
+  ]
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[90] overflow-hidden">
+      {planes.map((plane) => (
+        <motion.img
+          key={plane.id}
+          src="/images/topview.webp"
+          alt="Floating Plane"
+          className="absolute"
+          style={{
+            width: '200px',
+            height: 'auto',
+            transformOrigin: 'center',
+            opacity: plane.opacity
+          }}
+          animate={{
+            x: plane.x,
+            y: plane.y,
+            rotate: [plane.rotate, plane.rotate],
+            scale: plane.scale
+          }}
+          transition={{
+            duration: plane.duration,
+            delay: plane.delay,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
 // Navigation Component
 function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -223,7 +342,7 @@ function Navigation() {
      <motion.nav
        initial={{ y: -100 }}
        animate={{ y: 0 }}
-       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+       className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-300 ${
          isScrolled ? 'bg-white shadow-lg' : 'bg-white'
        }`}
      >
@@ -262,7 +381,7 @@ function Navigation() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden text-black p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -303,62 +422,60 @@ function Navigation() {
 
 // Hero Section
 function HeroSection() {
-  const { scrollY } = useScroll()
-  const y = useTransform(scrollY, [0, 500], [0, 150])
-  const opacity = useTransform(scrollY, [0, 300], [1, 0])
-
+  const glowRef = useMouseGlow()
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" ref={glowRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
-          src="/images/hero-bg.png" 
+          src="/images/heropage.webp" 
           alt="Hero Background" 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-80"
         />
-        {/* Animated Background Gradient Overlay */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FFC800]/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#FFA500]/20 rounded-full blur-3xl animate-pulse delay-1000" />
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#FFD700]/10 rounded-full blur-2xl animate-pulse delay-500" />
-        </div>
+        <div className="absolute inset-0 bg-black/40" />
+        {/* Dynamic Glow Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+          }}
+        />
       </div>
-
-      <motion.div style={{ y, opacity }} className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, ease: "easeOut" }}
           className="mb-6"
         >
-          <span className="inline-block px-4 py-2 bg-[#FFC800]/20 border border-[#FFC800]/30 rounded-full text-[#FFC800] text-sm font-medium backdrop-blur-sm">
+          <span className="inline-block px-4 py-2 bg-[#FFC800]/20 border border-[#FFC800]/30 rounded-full text-[#FFC800] text-sm font-medium backdrop-blur-sm shadow-[0_0_15px_rgba(255,200,0,0.1)]">
             Empowering Indian Students Since 2025
           </span>
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight"
+          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight drop-shadow-md"
         >
           Our on-ground experience in France is your path to academic journey
         </motion.h1>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button size="lg" className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-bold px-8 py-6 text-lg shadow-lg shadow-[#FFC800]/25">
+            <Button size="lg" className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-bold px-8 py-6 text-lg shadow-lg shadow-[#FFC800]/25 transition-all duration-300">
               Start Your Journey
               <Send className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg">
+            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg transition-all duration-300">
               Learn More
             </Button>
           </motion.div>
@@ -367,29 +484,41 @@ function HeroSection() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 1.2 }}
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
             <ChevronDown className="h-8 w-8 text-[#FFC800]" />
           </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 }
 
 function PathToSuccessSection() {
+  const glowRef = useMouseGlow()
   return (
-    <section className="relative py-24 bg-gradient-to-b from-black via-gray-900 to-black overflow-hidden">
+    <section ref={glowRef} className="relative py-24 bg-black overflow-hidden">
+      {/* Background Image */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/3 left-1/4 w-80 h-80 bg-[#FFC800]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-[#FFA500]/10 rounded-full blur-3xl" />
+        <img 
+          src="/images/path-to-success-user.webp" 
+          alt="Path to Success Background" 
+          className="w-full h-full object-cover opacity-80"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        {/* Dynamic Glow Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+          }}
+        />
       </div>
-
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -427,7 +556,7 @@ function StatsSection() {
   ]
 
   return (
-    <section className="relative py-16 bg-gradient-to-r from-[#FFC800] via-[#FFD700] to-[#FFA500]">
+    <section className="relative py-16 bg-[#FFC800]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
@@ -478,12 +607,7 @@ function AboutSection() {
   ]
 
   return (
-    <section id="about" className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFC800]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FFA500]/10 rounded-full blur-3xl" />
-      </div>
-
+    <section id="about" className="relative py-24 bg-black overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -531,8 +655,126 @@ function AboutSection() {
   )
 }
 
+// Transition Timeline Component for Student Safe Passage
+function SafePassageTimeline() {
+  const timelineSteps = [
+    {
+      phase: "Phase 1: Clear Pre-Departure Prep (In India)",
+      title: "Academic Mapping & Financial Prep",
+      description: "Personalized support matching your budget and academic profile with the right universities. Complete guidance on financial requirements, bank docs, and educational loans so you have absolute transparency.",
+      icon: Target,
+      color: "from-yellow-400 to-amber-500",
+    },
+    {
+      phase: "Phase 2: Stress-Free Documentation",
+      title: "Admissions & Visa Filings",
+      description: "Step-by-step assistance in preparing application files and drafting SOPs. We manage mock visa interviews and double-check all documents to ensure a stellar approval rate.",
+      icon: BookOpen,
+      color: "from-amber-500 to-orange-500",
+    },
+    {
+      phase: "Phase 3: Guaranteed Landing Support",
+      title: "Safe Transition & Accommodation",
+      description: "Never feel alone when arriving in a new country. We coordinate flight briefings, organize airport pick-ups, and secure certified student housing in France before you fly.",
+      icon: MapPin,
+      color: "from-orange-500 to-red-500",
+    },
+    {
+      phase: "Phase 4: French Admin Integration (In France)",
+      title: "Setting Up Your New Life",
+      description: "Our local French team walks you through essential registrations: opening a French bank account, setting up transport passes, securing healthcare cards, and applying for CAF housing subsidies.",
+      icon: GraduationCap,
+      color: "from-red-500 to-purple-600",
+    }
+  ]
+
+  const glowRef = useMouseGlow()
+  return (
+    <section ref={glowRef} className="relative py-24 bg-black overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src="/images/roadmap.webp" 
+          alt="Roadmap Background" 
+          className="w-full h-full object-cover opacity-80"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        {/* Dynamic Glow Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+          }}
+        />
+      </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <span className="inline-block px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-500 text-sm font-medium backdrop-blur-sm mb-4">
+            Zero-Anxiety Move to Europe
+          </span>
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            The VolGO <span className="text-[#FFC800]">Safe Passage</span> Roadmap
+          </h2>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+            Transitioning from India to France can feel overwhelming. We've built an end-to-end guidance network to keep you safe, secure, and fully set up.
+          </p>
+        </motion.div>
+
+        <div className="relative border-l-2 border-dashed border-yellow-500/30 ml-4 md:ml-32 md:pl-8 space-y-12">
+          {timelineSteps.map((step, index) => (
+            <motion.div
+              key={step.title}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              viewport={{ once: true }}
+              className="relative pl-8 md:pl-12"
+            >
+              {/* Timeline marker */}
+              <div className="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-black border-2 border-yellow-500 flex items-center justify-center z-10">
+                <div className="w-3.5 h-3.5 rounded-full bg-yellow-500 animate-pulse" />
+              </div>
+
+              {/* Number tag */}
+              <span className="absolute left-[-90px] top-1.5 hidden md:block text-5xl font-black text-white/10 select-none">
+                0{index + 1}
+              </span>
+
+              <Card className="bg-white/5 backdrop-blur-md border border-white/10 hover:border-yellow-500/50 transition-all duration-300">
+                <CardContent className="p-8 flex flex-col md:flex-row gap-6 items-start">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shrink-0 shadow-lg`}>
+                    <step.icon className="h-7 w-7 text-black" />
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-xs uppercase tracking-wider text-yellow-500 font-bold">
+                      {step.phase}
+                    </span>
+                    <h3 className="text-2xl font-bold text-white">
+                      {step.title}
+                    </h3>
+                    <p className="text-gray-400 leading-relaxed text-base md:text-lg">
+                      {step.description}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // Students Section
 function StudentsSection() {
+  const glowRef = useMouseGlow()
   const benefits = [
     {
       icon: Star,
@@ -561,12 +803,23 @@ function StudentsSection() {
   ]
 
   return (
-    <section id="students" className="relative py-24 bg-gradient-to-b from-black to-gray-900 overflow-hidden">
+    <section id="students" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
+      {/* Background Image */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-[#FFC800]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-[#FFA500]/5 rounded-full blur-3xl" />
+        <img 
+          src="/images/aeroplane.webp" 
+          alt="Quality of Higher Education in France Background" 
+          className="w-full h-full object-cover opacity-80"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        {/* Dynamic Glow Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+          }}
+        />
       </div>
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -612,28 +865,6 @@ function StudentsSection() {
           ))}
         </div>
 
-        {/* Image Gallery */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-16 flex justify-center items-center gap-3"
-        >
-          {['/images/unnamed(11).png', '/images/unnamed(12).png', '/images/unnamed(13).png', '/images/unnamed(10).png'].map((src, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.1 }}
-              className="w-8 h-8 rounded-md overflow-hidden border border-white/10"
-            >
-              <img
-                src={src}
-                alt={`Social ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </section>
   )
@@ -654,12 +885,7 @@ function ReasonsToChooseFranceSection() {
   ]
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#FFC800]/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#FFA500]/8 rounded-full blur-3xl" />
-      </div>
-
+    <section className="relative py-24 bg-black overflow-hidden">
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -708,12 +934,7 @@ function ReasonsToChooseVolgoSection() {
   ]
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-black to-gray-900 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-0 w-80 h-80 bg-[#FFC800]/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-[#FFA500]/8 rounded-full blur-3xl" />
-      </div>
-
+    <section className="relative py-24 bg-black overflow-hidden">
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -754,7 +975,7 @@ function BlogsSection() {
        id: 1,
        title: "Why Choose France for Higher Education?",
        excerpt: "Discover the benefits of studying in France, from world-class universities to rich cultural experiences and excellent career opportunities.",
-       image: "/images/unnamed(10).png",
+       image: "/images/blog-france.png",
        date: "May 10, 2026",
        readTime: "5 min read",
        tags: ["Study Abroad", "France", "Education"]
@@ -763,7 +984,7 @@ function BlogsSection() {
        id: 2,
        title: "Top 10 Universities in France for Indian Students",
        excerpt: "Explore the best French universities that offer excellent programs for international students, including admission requirements and scholarship opportunities.",
-       image: "/images/unnamed(11).png",
+       image: "/images/blog-universities.png",
        date: "May 5, 2026",
        readTime: "7 min read",
        tags: ["University Guide", "Admissions", "Rankings"]
@@ -772,7 +993,7 @@ function BlogsSection() {
        id: 3,
        title: "Student Life in France: What to Expect",
        excerpt: "Learn about accommodation, cost of living, cultural adaptation, and work opportunities for international students in France.",
-       image: "/images/unnamed(12).png",
+       image: "/images/blog-student-life.png",
        date: "April 28, 2026",
        readTime: "6 min read",
        tags: ["Student Life", "Cost of Living", "Culture"]
@@ -780,12 +1001,7 @@ function BlogsSection() {
    ];
 
   return (
-    <section id="blogs" className="relative py-24 bg-gradient-to-b from-black to-gray-900 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-[#FFC800]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#FFA500]/5 rounded-full blur-3xl" />
-      </div>
-
+    <section id="blogs" className="relative py-24 bg-black overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -813,20 +1029,13 @@ function BlogsSection() {
               viewport={{ once: true }}
               whileHover={{ scale: 1.02 }}
             >
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#FFC800]/30 transition-all duration-300 overflow-hidden group">
-                <div className="relative">
-                  <img
-                    src={blog.image}
-                    alt={blog.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-4">
-                    <span className="text-xs text-[#FFC800] font-medium bg-black/50 rounded-full px-2 py-1">
+              <div className="bg-white/5 backdrop-blur-sm border-t-4 border-t-[#FFC800] border-x border-b border-white/10 hover:border-[#FFC800]/50 transition-all duration-300 overflow-hidden group">
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-xs text-[#FFC800] font-bold uppercase bg-[#FFC800]/10 border border-[#FFC800]/20 rounded-full px-3 py-1">
                       {blog.tags[0]}
                     </span>
                   </div>
-                </div>
-                <div className="p-6">
                    <div className="flex items-center gap-2 mb-2">
                      <Calendar className="h-4 w-4 text-gray-400" aria-label="Date" />
                      <span className="text-sm text-gray-400">{blog.date}</span>
@@ -876,12 +1085,7 @@ function ContactSection() {
   }
 
   return (
-    <section id="contact" className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#FFC800]/10 rounded-full blur-3xl -translate-x-1/2" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#FFA500]/10 rounded-full blur-3xl translate-x-1/2" />
-      </div>
-
+    <section id="contact" className="relative py-24 bg-black overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -1034,7 +1238,7 @@ function ContactSection() {
 // Footer
 function Footer() {
   return (
-    <footer className="relative bg-white border-t border-gray-200 py-12">
+    <footer className="relative bg-white border-t border-gray-200 py-12 z-[110]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10 mb-12">
           <div>
@@ -1087,89 +1291,24 @@ function Footer() {
   )
 }
 
-function AirplaneScroll() {
-  const { scrollY } = useScroll()
-
-  const rawY = useTransform(scrollY, [0, 6000], [800, -600])
-  const y = useSpring(rawY, { stiffness: 80, damping: 30 })
-
-  const rawRotation = useTransform(scrollY, [0, 6000], [-45, -45])
-  const rotation = useSpring(rawRotation, { stiffness: 80, damping: 30 })
-
-  const rawOpacity = useTransform(scrollY, [0, 300, 4500, 5500], [0, 1, 1, 0])
-  const opacity = useSpring(rawOpacity, { stiffness: 80, damping: 30 })
-
-  return (
-    <motion.div
-      style={{ y, rotate: rotation, opacity }}
-      className="fixed right-4 md:right-8 z-[5] pointer-events-none"
-    >
-      <img
-        src="/images/airplane-top.png"
-        alt="Airplane"
-        className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-[0_0_25px_rgba(255,200,0,0.4)]"
-      />
-    </motion.div>
-  )
-}
-
-function CloudParallax() {
-  const { scrollY } = useScroll()
-
-  const layers = [
-    { speed: 0.15, opacity: 0.06, scale: 1.8, positions: ['left-[5%]', 'left-[55%]', 'left-[30%]', 'left-[70%]'] },
-    { speed: 0.35, opacity: 0.1, scale: 1.3, positions: ['left-[10%]', 'left-[60%]', 'left-[20%]', 'left-[50%]'] },
-    { speed: 0.55, opacity: 0.14, scale: 1, positions: ['left-[15%]', 'left-[65%]', 'left-[40%]', 'left-[80%]'] },
-  ]
-
-  return (
-    <div className="fixed inset-0 z-30 pointer-events-none overflow-hidden">
-      {layers.map((layer, layerIndex) => {
-        const rawY = useTransform(scrollY, [0, 6000], [0, -(scrollY.get() !== undefined ? 6000 * layer.speed : 0)])
-        const y = useSpring(rawY, { stiffness: 50, damping: 30 })
-        const topOffsets = [100, 900, 2000, 3200]
-
-        return (
-          <motion.div key={layerIndex} style={{ y }} className="absolute inset-x-0">
-            {layer.positions.map((pos, i) => (
-              <div
-                key={i}
-                className={`absolute ${pos}`}
-                style={{ top: topOffsets[i], opacity: layer.opacity }}
-              >
-                <img
-                  src="/images/cloud.png"
-                  alt=""
-                  className="object-contain"
-                  style={{ transform: `scale(${layer.scale})` }}
-                />
-              </div>
-            ))}
-          </motion.div>
-        )
-      })}
-    </div>
-  )
-}
-
 // Main Page Component
 export default function Home() {
    return (
       <main className="relative bg-black min-h-screen">
         <ParticleField />
-        <AirplaneScroll />
-        <CloudParallax />
+        <BackgroundPlanes />
         <Navigation />
         <HeroSection />
         <PathToSuccessSection />
         <StatsSection />
-       <AboutSection />
+        <AboutSection />
+        <SafePassageTimeline />
         <StudentsSection />
         <ReasonsToChooseFranceSection />
         <ReasonsToChooseVolgoSection />
         <BlogsSection />
-       <ContactSection />
-       <Footer />
-     </main>
+        <ContactSection />
+        <Footer />
+      </main>
    )
 }
