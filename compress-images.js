@@ -9,7 +9,9 @@ const imagesToConvert = [
   { in: 'path to success.png', out: 'path-to-success-user.webp', quality: 75 },
   { in: 'roadmap.png', out: 'roadmap.webp', quality: 75 },
   { in: 'aeroplane.png', out: 'aeroplane.webp', quality: 75 },
-  { in: 'topview (1).png', out: 'topview.webp', quality: 80 }
+  { in: 'topview (1).png', out: 'topview.webp', quality: 80 },
+  { in: 'welcome Volgo.png', out: 'welcome-volgo.webp', quality: 75 },
+  { in: 'REASONS TO CHOOSE.png', out: 'reasons-to-choose.webp', quality: 75 }
 ];
 
 async function run() {

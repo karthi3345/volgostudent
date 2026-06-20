@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -220,3 +221,90 @@ html {
   background: rgba(255, 200, 0, 0.3);
   color: white;
 }
+
+/* Google Docs Content Styling Overrides */
+.google-doc-content * {
+  color: inherit !important;
+  background-color: transparent !important;
+  font-family: inherit !important;
+}
+.google-doc-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0.75rem !important;
+  margin: 1.5rem 0 !important;
+}
+.google-doc-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+  color: inherit !important;
+}
+.google-doc-content td, .google-doc-content th {
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  padding: 0.75rem !important;
+  color: inherit !important;
+}
+.google-doc-content a {
+  color: #FFC800 !important;
+  text-decoration: underline !important;
+}
+
+/* Parchment Paper Handwritten Styling overrides */
+.parchment-paper {
+  font-family: 'Kalam', cursive, sans-serif !important;
+  background-color: #FAF6EE !important;
+  color: #1c1917 !important; /* Dark charcoal/ink */
+}
+
+/* Repeating seamless background behind the blog modal */
+.blog-overlay-backdrop {
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url('/images/blog-bg.webp') repeat !important;
+}
+
+.parchment-paper .google-doc-content * {
+  font-family: 'Kalam', cursive, sans-serif !important;
+  color: #1c1917 !important;
+}
+
+.parchment-paper .google-doc-content table {
+  border-collapse: collapse !important;
+  border: 2px solid #1c1917 !important;
+}
+
+.parchment-paper .google-doc-content td, .parchment-paper .google-doc-content th {
+  border: 1px solid #1c1917 !important;
+  padding: 0.5rem 0.75rem !important;
+  color: #1c1917 !important;
+}
+
+.parchment-paper .google-doc-content a {
+  color: #0284c7 !important; /* Blue ink */
+  text-decoration: underline !important;
+}
+
+/* Force bullet points and numbers to display correctly on the handwritten paper */
+.parchment-paper .google-doc-content ul {
+  list-style-type: disc !important;
+  padding-left: 2.5rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.parchment-paper .google-doc-content ol {
+  list-style-type: decimal !important;
+  padding-left: 2.5rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.parchment-paper .google-doc-content li {
+  display: list-item !important;
+  margin-bottom: 0.5rem !important;
+  padding-left: 0.25rem !important;
+}
+
+
+
