@@ -306,5 +306,16 @@ html {
   padding-left: 0.25rem !important;
 }
 
+/* Force hardware acceleration and anti-aliasing on animated/rotated elements */
+.anti-alias-plane {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  outline: 1px solid transparent;
+  transform: translate3d(0, 0, 0);
+  image-rendering: auto;
+}
+
+
 
 

@@ -279,20 +279,20 @@ function useMouseGlow() {
 // Background planes moving randomly
 function BackgroundPlanes() {
   const planes = [
-    { id: 1, x: ['-20vw', '120vw'], y: ['15vh', '15vh'], rotate: 90, duration: 35, delay: 0, scale: 0.08, opacity: 0.5 },
-    { id: 2, x: ['120vw', '-20vw'], y: ['45vh', '45vh'], rotate: 270, duration: 42, delay: 8, scale: 0.06, opacity: 0.45 },
-    { id: 3, x: ['-20vw', '120vw'], y: ['70vh', '70vh'], rotate: 90, duration: 38, delay: 15, scale: 0.07, opacity: 0.5 },
-    { id: 4, x: ['120vw', '-20vw'], y: ['85vh', '85vh'], rotate: 270, duration: 45, delay: 22, scale: 0.05, opacity: 0.4 }
+    { id: 1, x: ['-20vw', '120vw'], y: ['15vh', '15vh'], rotate: 90, duration: 35, delay: 0, scale: 0.08, opacity: 0.85 },
+    { id: 2, x: ['120vw', '-20vw'], y: ['45vh', '45vh'], rotate: 270, duration: 42, delay: 8, scale: 0.06, opacity: 0.85 },
+    { id: 3, x: ['-20vw', '120vw'], y: ['70vh', '70vh'], rotate: 90, duration: 38, delay: 15, scale: 0.07, opacity: 0.85 },
+    { id: 4, x: ['120vw', '-20vw'], y: ['85vh', '85vh'], rotate: 270, duration: 45, delay: 22, scale: 0.05, opacity: 0.8 }
   ]
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[90] overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none z-[5] overflow-hidden">
       {planes.map((plane) => (
         <motion.img
           key={plane.id}
           src="/images/topview.webp"
           alt="Floating Plane"
-          className="absolute"
+          className="absolute anti-alias-plane"
           style={{
             width: '200px',
             height: 'auto',
@@ -1176,6 +1176,14 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
   );
 }
 
+// Safe helper to decode base64 strings both server-side and client-side to prevent scraper harvesting
+const decodeStr = (str: string) => {
+  if (typeof window !== 'undefined') {
+    return atob(str);
+  }
+  return Buffer.from(str, 'base64').toString('utf-8');
+};
+
 // Contact Section
 function ContactSection() {
   const [formData, setFormData] = useState({
@@ -1187,8 +1195,28 @@ function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log(formData)
+    
+    // Format message for WhatsApp
+    const messageText = `*New Contact Form Submission - VolGO Student*\n\n` +
+      `*Name:* ${formData.name}\n` +
+      `*Email:* ${formData.email}\n` +
+      `*Phone:* ${formData.phone}\n\n` +
+      `*Message:*\n${formData.message}`;
+
+    // Obfuscated WhatsApp number (+91 95005 08790) to prevent scraper harvesting
+    const target = decodeStr('OTE5NTAwNTA4Nzkw');
+    const whatsappUrl = `https://wa.me/${target}?text=${encodeURIComponent(messageText)}`;
+    
+    // Open WhatsApp Click to Chat URL in a new window/tab
+    window.open(whatsappUrl, '_blank');
+
+    // Reset form data
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      message: ''
+    });
   }
 
   return (
@@ -1227,8 +1255,8 @@ function ContactSection() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">Email Us</h3>
-                <p className="text-gray-400">info@volgostudent.com</p>
-                <p className="text-gray-400">support@volgostudent.com</p>
+                <p className="text-gray-400">{decodeStr('aW5mb0B2b2xnb3N0dWRlbnQuY29t')}</p>
+                <p className="text-gray-400">{decodeStr('c3VwcG9ydEB2b2xnb3N0dWRlbnQuY29t')}</p>
               </div>
             </div>
 
@@ -1238,8 +1266,8 @@ function ContactSection() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">Call Us</h3>
-                <p className="text-gray-400">+91 98765 43210</p>
-                <p className="text-gray-400">+91 98765 43211</p>
+                <p className="text-gray-400">{decodeStr('KzkxIDk4NzY1IDQzMjEw')}</p>
+                <p className="text-gray-400">{decodeStr('KzkxIDk4NzY1IDQzMjEx')}</p>
               </div>
             </div>
 
@@ -1287,6 +1315,7 @@ function ContactSection() {
                       type="text"
                       placeholder="Enter your name"
                       className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800]"
+                      required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
@@ -1298,6 +1327,7 @@ function ContactSection() {
                         type="email"
                         placeholder="your@email.com"
                         className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800]"
+                        required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       />
@@ -1308,6 +1338,7 @@ function ContactSection() {
                         type="tel"
                         placeholder="+91 XXXXX XXXXX"
                         className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800]"
+                        required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       />
@@ -1319,6 +1350,7 @@ function ContactSection() {
                       placeholder="How can we help you?"
                       rows={4}
                       className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800] resize-none"
+                      required
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     />
@@ -1365,10 +1397,10 @@ function Footer() {
           <div>
             <h4 className="text-[#B8860B] font-bold text-lg mb-4">Contact Us</h4>
             <div className="text-gray-700 text-sm space-y-1">
-              <p><span className="text-gray-500">Mobile</span><span className="mx-2">:</span>+91 877 810 877 0</p>
-              <p><span className="text-gray-500">Phone</span><span className="mx-2">:</span>+91 45 43 233 811</p>
-              <p><span className="text-gray-500">Email</span><span className="mx-2">:</span>Student@volgo-india.com</p>
-              <p><span className="text-gray-500">Web</span><span className="mx-3">:</span>www.volgo-india.com</p>
+              <p><span className="text-gray-500">Mobile</span><span className="mx-2">:</span>{decodeStr('KzkxIDg3NyA4MTAgODc3IDA=')}</p>
+              <p><span className="text-gray-500">Phone</span><span className="mx-2">:</span>{decodeStr('KzkxIDQ1IDQzIDIzMyA4MTE=')}</p>
+              <p><span className="text-gray-500">Email</span><span className="mx-2">:</span>{decodeStr('U3R1ZGVudEB2b2xnby1pbmRpYS5jb20=')}</p>
+              <p><span className="text-gray-500">Web</span><span className="mx-3">:</span>{decodeStr('d3d3LnZvbGdvLWluZGlhLmNvbQ==')}</p>
             </div>
           </div>
 
