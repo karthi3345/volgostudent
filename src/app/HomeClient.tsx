@@ -31,7 +31,13 @@ import {
 } from 'lucide-react'
 
 import InteractiveMap from '@/components/InteractiveMap'
+import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
+const DynamicInteractiveMap = dynamic(() => import('@/components/InteractiveMap'), { 
+  ssr: false,
+  loading: () => <div className="h-screen w-full flex items-center justify-center text-white/50">Loading Map...</div>
+})
 // Particle types for educational theme
 interface Particle {
   id: number
@@ -372,7 +378,7 @@ function BackgroundPlanes() {
   ]
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-[5] overflow-hidden">
+    <div className="hidden md:block absolute inset-0 pointer-events-none z-[5] overflow-hidden">
       {basePlanes.map((plane) => (
         <SinglePlane key={plane.id} planeData={plane} />
       ))}
@@ -485,10 +491,12 @@ function HeroSection() {
     <section id="home" ref={glowRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
+        <Image 
           src="/images/heropage.webp" 
           alt="Hero Background" 
-          className="w-full h-full object-cover opacity-80"
+          fill
+          priority
+          className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
@@ -559,10 +567,11 @@ function PathToSuccessSection() {
     <section ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
+        <Image 
           src="/images/path-to-success-user.webp" 
           alt="Path to Success Background" 
-          className="w-full h-full object-cover opacity-80"
+          fill
+          className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
@@ -667,10 +676,11 @@ function AboutSection() {
     <section id="about" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
+        <Image 
           src="/images/welcome-volgo.webp" 
           alt="Welcome to VolGO Background" 
-          className="w-full h-full object-cover opacity-80"
+          fill
+          className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
@@ -782,10 +792,11 @@ function SafePassageTimeline() {
     <section ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
+        <Image 
           src="/images/roadmap.webp" 
           alt="Roadmap Background" 
-          className="w-full h-full object-cover opacity-80"
+          fill
+          className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
@@ -909,10 +920,11 @@ function StudentsSection() {
       <div className="relative py-24">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img 
+          <Image 
             src="/images/aeroplane.webp" 
             alt="Quality of Higher Education in France Background" 
-            className="w-full h-full object-cover opacity-80"
+            fill
+            className="object-cover opacity-80"
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
@@ -974,10 +986,11 @@ function StudentsSection() {
       <div ref={glowRef2} className="relative py-24 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img 
+          <Image 
             src="/images/program-bg.webp" 
             alt="Programs Directory Background" 
-            className="w-full h-full object-cover opacity-40"
+            fill
+            className="object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
@@ -1063,10 +1076,11 @@ function ReasonsSection() {
     <section id="reasons" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <img 
+        <Image 
           src="/images/reasons-to-choose.webp" 
           alt="Reasons to Choose Background" 
-          className="w-full h-full object-cover opacity-80"
+          fill
+          className="object-cover opacity-80"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
@@ -1607,7 +1621,7 @@ export default function HomeClient({ initialBlogs }: { initialBlogs: any[] }) {
         <AboutSection />
         <SafePassageTimeline />
         <StudentsSection />
-        <InteractiveMap />
+        <DynamicInteractiveMap />
         <ReasonsSection />
         <BlogsSection initialBlogs={initialBlogs} />
         <ContactSection />

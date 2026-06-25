@@ -14,24 +14,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Z.ai Code Scaffold - AI-Powered Development",
-  description: "Modern Next.js scaffold optimized for AI-powered development with Z.ai. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
-  keywords: ["Z.ai", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
-  authors: [{ name: "Z.ai Team" }],
+  title: "Volgo",
+  description: "Your partner in achieving academic excellence and realizing your dreams of higher education in France.",
+  keywords: ["Volgo", "France", "Education", "Study Abroad"],
+  authors: [{ name: "Volgo Team" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/images/channels4_profile.webp",
   },
   openGraph: {
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    title: "Volgo",
+    description: "Your partner in achieving academic excellence and realizing your dreams of higher education in France.",
+    url: "https://volgo.com",
+    siteName: "Volgo",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
+    title: "Volgo",
+    description: "Your partner in achieving academic excellence in France.",
   },
 };
 
