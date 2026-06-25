@@ -78,9 +78,8 @@ function ParticleField() {
     window.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseleave', handleMouseLeave)
 
-    // Initialize particles
     const colors = ['#FFC800', '#FFD700', '#FFA500', '#FF8C00', '#FFE4B5']
-    const particleCount = 60
+    const particleCount = 35
 
     for (let i = 0; i < particleCount; i++) {
       particlesRef.current.push({
@@ -862,6 +861,7 @@ function SafePassageTimeline() {
 // Students Section
 function StudentsSection() {
   const glowRef = useMouseGlow()
+  const glowRef2 = useMouseGlow()
   const benefits = [
     {
       icon: Star,
@@ -901,15 +901,18 @@ function StudentsSection() {
   ]
 
   return (
-    <section id="students" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img 
-          src="/images/aeroplane.webp" 
-          alt="Quality of Higher Education in France Background" 
-          className="w-full h-full object-cover opacity-80"
-        />
-        <div className="absolute inset-0 bg-black/40" />
+    <section id="students" ref={glowRef} className="relative overflow-hidden">
+      {/* Part 1: Quality of Higher Education with aeroplane bg */}
+      <div className="relative py-24">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/images/aeroplane.webp" 
+            alt="Quality of Higher Education in France Background" 
+            className="w-full h-full object-cover opacity-80"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
         {/* Dynamic Glow Overlay */}
         <div 
           className="absolute inset-0 pointer-events-none"
@@ -917,90 +920,109 @@ function StudentsSection() {
             background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
           }}
         />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="text-[#FFC800] font-semibold text-lg mb-4 block">For Students</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Quality of Higher Education in France
+            </h2>
+            <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+              Discover the exceptional opportunities awaiting Indian students in France's 
+              prestigious educational institutions.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={benefit.title}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 hover:border-[#FFC800]/30 transition-all duration-300 overflow-hidden group">
+                  <CardContent className="p-8">
+                    <div className="flex items-start gap-6">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                        <benefit.icon className="h-8 w-8 text-black" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-white mb-3">{benefit.title}</h3>
+                        <p className="text-gray-400 leading-relaxed text-lg">{benefit.description}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <span className="text-[#FFC800] font-semibold text-lg mb-4 block">For Students</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Quality of Higher Education in France
-          </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Discover the exceptional opportunities awaiting Indian students in France's 
-            prestigious educational institutions.
-          </p>
-        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={benefit.title}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <Card className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 hover:border-[#FFC800]/30 transition-all duration-300 overflow-hidden group">
-                <CardContent className="p-8">
-                  <div className="flex items-start gap-6">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                      <benefit.icon className="h-8 w-8 text-black" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-3">{benefit.title}</h3>
-                      <p className="text-gray-400 leading-relaxed text-lg">{benefit.description}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+      {/* Part 2: FINDING YOUR RIGHT PROGRAM IS EASY with background */}
+      <div ref={glowRef2} className="relative py-24 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/images/program-bg.webp" 
+            alt="Programs Directory Background" 
+            className="w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
+        {/* Dynamic Glow Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+          }}
+        />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <span className="text-[#FFC800] font-semibold text-lg mb-4 block uppercase tracking-widest">Programs Directory</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              FINDING YOUR RIGHT PROGRAM IS EASY
+            </h2>
+            <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+              Get personalized advice from VolGO to match your interests, skills, and career aspirations with the right programs.
+            </p>
+          </motion.div>
 
-        {/* New Programs Sub-section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mt-24 mb-14"
-        >
-          <span className="text-[#FFC800] font-semibold text-lg mb-4 block uppercase tracking-widest">Programs Directory</span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            FINDING YOUR RIGHT PROGRAM IS EASY
-          </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
-            Get personalized advice from VolGO to match your interests, skills, and career aspirations with the right programs.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {programs.map((prog, index) => (
-            <motion.div
-              key={prog.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.03 }}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#FFC800]/40 rounded-2xl p-6 flex flex-col items-center text-center justify-center gap-4 transition-all duration-300 group"
-            >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${prog.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
-                <prog.icon className="h-6 w-6 text-black" />
-              </div>
-              <span className="text-white font-bold text-sm md:text-base leading-snug">
-                {prog.name}
-              </span>
-            </motion.div>
-          ))}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {programs.map((prog, index) => (
+              <motion.div
+                key={prog.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.03 }}
+                className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#FFC800]/40 rounded-2xl p-6 flex flex-col items-center text-center justify-center gap-4 transition-all duration-300 group"
+              >
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${prog.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                  <prog.icon className="h-6 w-6 text-black" />
+                </div>
+                <span className="text-white font-bold text-sm md:text-base leading-snug">
+                  {prog.name}
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
-
       </div>
     </section>
   )
