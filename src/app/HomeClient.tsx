@@ -26,6 +26,8 @@ import {
   Calendar
 } from 'lucide-react'
 
+import InteractiveMap from '@/components/InteractiveMap'
+
 // Particle types for educational theme
 interface Particle {
   id: number
@@ -331,11 +333,11 @@ function Navigation() {
   }, [])
 
     const navItems = [
-      { name: 'About', href: '#about' },
+      { name: 'Home', href: '#home' },
+      { name: 'About Us', href: '#about' },
+      { name: 'Students', href: '#students' },
       { name: 'Blogs', href: '#blogs' },
       { name: 'Contact', href: '#contact' },
-      { name: 'Home', href: '#home' },
-      { name: 'Students', href: '#students' },
     ]
 
   return (
@@ -372,11 +374,6 @@ function Navigation() {
                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFC800] transition-all group-hover:w-full" />
                </motion.a>
              ))}
-             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-               <Button className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-semibold px-6">
-                 Get Started
-               </Button>
-             </motion.div>
            </div>
 
           {/* Mobile Menu Button */}
@@ -409,9 +406,6 @@ function Navigation() {
                          {item.name}
                        </a>
                      ))}
-                     <Button className="w-full bg-[#FFC800] hover:bg-[#FFD700] text-black font-semibold">
-                       Get Started
-                     </Button>
                    </div>
                  </motion.div>
                )}
@@ -549,16 +543,18 @@ function PathToSuccessSection() {
 // Stats Section
 function StatsSection() {
   const stats = [
-    { icon: GraduationCap, value: 500, suffix: '+', label: 'Students Guided' },
-    { icon: Globe, value: 50, suffix: '+', label: 'Partner Universities' },
-    { icon: Award, value: 98, suffix: '%', label: 'Success Rate' },
-    { icon: Users, value: 15, suffix: '+', label: 'Expert Counselors' },
+    { icon: Users, value: 430000, suffix: '+', label: 'International students in France' },
+    { icon: BookOpen, value: 1600, suffix: '+', label: 'HIGHER EDUCATION PROGRAMS TAUGHT in ENGLISH' },
+    { icon: Award, value: 60, suffix: '+', label: 'NOBEL PRIZES FOR RESEARCH IN FRANCE' },
   ]
 
   return (
     <section className="relative py-16 bg-[#FFC800]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <h2 className="text-center text-black font-extrabold text-2xl md:text-3xl tracking-wider uppercase mb-12">
+          KEY FIGURES FOR FRENCH EDUCATION
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -566,13 +562,13 @@ function StatsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="text-center px-4"
             >
               <stat.icon className="h-10 w-10 mx-auto mb-3 text-black" />
-              <div className="text-3xl md:text-4xl font-bold text-black mb-1">
+              <div className="text-3xl md:text-4xl font-extrabold text-black mb-2">
                 <AnimatedCounter end={stat.value} suffix={stat.suffix} />
               </div>
-              <p className="text-black/70 font-medium">{stat.label}</p>
+              <p className="text-black/80 font-bold uppercase tracking-wide text-sm max-w-xs mx-auto leading-snug">{stat.label}</p>
             </motion.div>
           ))}
         </div>
@@ -1443,6 +1439,7 @@ export default function HomeClient({ initialBlogs }: { initialBlogs: any[] }) {
         <AboutSection />
         <SafePassageTimeline />
         <StudentsSection />
+        <InteractiveMap />
         <ReasonsSection />
         <BlogsSection initialBlogs={initialBlogs} />
         <ContactSection />
