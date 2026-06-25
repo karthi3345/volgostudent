@@ -282,42 +282,100 @@ function useMouseGlow() {
   return ref
 }
 
-// Background planes moving randomly
+// Single Plane Component managing its own direction, height variations, and return loops
+function SinglePlane({ planeData }: { planeData: any }) {
+  const [direction, setDirection] = useState<'ltr' | 'rtl'>(planeData.initialDirection)
+  const [y, setY] = useState(planeData.y)
+  const [duration, setDuration] = useState(planeData.duration)
+  const [isFirstRun, setIsFirstRun] = useState(true)
+
+  const startX = direction === 'ltr' ? '-20vw' : '120vw'
+  const endX = direction === 'ltr' ? '120vw' : '-20vw'
+  const rotation = direction === 'ltr' ? 90 : 270
+
+  // On first load, start mid-flight at a pre-calculated initial X position
+  const initialX = isFirstRun ? planeData.initialX : startX
+
+  const handleAnimationComplete = () => {
+    setIsFirstRun(false)
+    setDirection((prev) => (prev === 'ltr' ? 'rtl' : 'ltr'))
+
+    // Randomize Y slightly around its base lane height (+/- 2.5% offset)
+    const baseVal = parseFloat(planeData.y)
+    const offset = (Math.random() - 0.5) * 5
+    const newY = Math.max(2, Math.min(98, baseVal + offset))
+    setY(`${newY}%`)
+
+    // Randomize duration slightly (+/- 4 seconds)
+    const newDuration = planeData.duration + (Math.random() - 0.5) * 8
+    setDuration(newDuration)
+  }
+
+  // Calculate remaining path fraction for the first run so speed remains constant
+  const remainingFraction = () => {
+    if (!isFirstRun) return 1
+    const current = parseFloat(initialX)
+    const total = 140 // total viewport span from -20vw to 120vw is 140
+    const end = direction === 'ltr' ? 120 : -20
+    return Math.abs(end - current) / total
+  }
+
+  const runDuration = duration * remainingFraction()
+
+  return (
+    <motion.img
+      src="/images/topview.webp"
+      alt="Floating Plane"
+      className="absolute anti-alias-plane"
+      style={{
+        width: planeData.width,
+        height: 'auto',
+        top: y,
+        transformOrigin: 'center',
+        opacity: planeData.opacity
+      }}
+      initial={{ x: initialX }}
+      animate={{
+        x: endX,
+        rotate: [rotation, rotation]
+      }}
+      transition={{
+        duration: runDuration,
+        ease: "linear"
+      }}
+      onAnimationComplete={handleAnimationComplete}
+    />
+  )
+}
+
+// Background planes moving randomly across the page
 function BackgroundPlanes() {
-  const planes = [
-    { id: 1, x: ['-20vw', '120vw'], y: ['15vh', '15vh'], rotate: 90, duration: 35, delay: 0, scale: 0.08, opacity: 0.85 },
-    { id: 2, x: ['120vw', '-20vw'], y: ['45vh', '45vh'], rotate: 270, duration: 42, delay: 8, scale: 0.06, opacity: 0.85 },
-    { id: 3, x: ['-20vw', '120vw'], y: ['70vh', '70vh'], rotate: 90, duration: 38, delay: 15, scale: 0.07, opacity: 0.85 },
-    { id: 4, x: ['120vw', '-20vw'], y: ['85vh', '85vh'], rotate: 270, duration: 45, delay: 22, scale: 0.05, opacity: 0.8 }
+  const basePlanes = [
+    // Hero & Upper sections (widths ranging from 80px to 260px)
+    { id: 1, y: '4%', duration: 35, width: '260px', opacity: 0.85, initialDirection: 'ltr', initialX: '35vw' },
+    { id: 2, y: '18%', duration: 42, width: '100px', opacity: 0.75, initialDirection: 'rtl', initialX: '75vw' },
+    { id: 3, y: '10%', duration: 40, width: '180px', opacity: 0.85, initialDirection: 'ltr', initialX: '15vw' },
+    { id: 4, y: '28%', duration: 37, width: '80px', opacity: 0.7, initialDirection: 'rtl', initialX: '60vw' },
+    
+    // Middle sections (Timeline & Students)
+    { id: 5, y: '36%', duration: 38, width: '210px', opacity: 0.85, initialDirection: 'ltr', initialX: '50vw' },
+    { id: 6, y: '52%', duration: 45, width: '110px', opacity: 0.75, initialDirection: 'rtl', initialX: '85vw' },
+    { id: 7, y: '44%', duration: 44, width: '240px', opacity: 0.85, initialDirection: 'ltr', initialX: '20vw' },
+    { id: 8, y: '60%', duration: 41, width: '90px', opacity: 0.7, initialDirection: 'rtl', initialX: '45vw' },
+    
+    // Lower sections (Map, Reasons, Blogs, Contact)
+    { id: 9, y: '68%', duration: 39, width: '170px', opacity: 0.85, initialDirection: 'ltr', initialX: '65vw' },
+    { id: 10, y: '82%', duration: 43, width: '120px', opacity: 0.8, initialDirection: 'rtl', initialX: '10vw' },
+    { id: 11, y: '75%', duration: 36, width: '85px', opacity: 0.7, initialDirection: 'ltr', initialX: '80vw' },
+    { id: 12, y: '88%', duration: 46, width: '230px', opacity: 0.85, initialDirection: 'rtl', initialX: '30vw' },
+    { id: 13, y: '94%', duration: 41, width: '250px', opacity: 0.9, initialDirection: 'ltr', initialX: '55vw' },
+    { id: 14, y: '97%', duration: 43, width: '130px', opacity: 0.8, initialDirection: 'rtl', initialX: '90vw' }
   ]
 
   return (
     <div className="absolute inset-0 pointer-events-none z-[5] overflow-hidden">
-      {planes.map((plane) => (
-        <motion.img
-          key={plane.id}
-          src="/images/topview.webp"
-          alt="Floating Plane"
-          className="absolute anti-alias-plane"
-          style={{
-            width: '200px',
-            height: 'auto',
-            transformOrigin: 'center',
-            opacity: plane.opacity
-          }}
-          animate={{
-            x: plane.x,
-            y: plane.y,
-            rotate: [plane.rotate, plane.rotate],
-            scale: plane.scale
-          }}
-          transition={{
-            duration: plane.duration,
-            delay: plane.delay,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
+      {basePlanes.map((plane) => (
+        <SinglePlane key={plane.id} planeData={plane} />
       ))}
     </div>
   )
@@ -476,29 +534,16 @@ function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button size="lg" className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-bold px-8 py-6 text-lg shadow-lg shadow-[#FFC800]/25 transition-all duration-300">
+            <Button 
+              size="lg" 
+              className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-bold px-8 py-6 text-lg shadow-lg shadow-[#FFC800]/25 transition-all duration-300"
+              onClick={() => {
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               Start Your Journey
               <Send className="ml-2 h-5 w-5" />
             </Button>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg transition-all duration-300">
-              Learn More
-            </Button>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="h-8 w-8 text-[#FFC800]" />
           </motion.div>
         </motion.div>
       </div>
@@ -1079,6 +1124,7 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
   const [blogs, setBlogs] = useState<any[]>(initialBlogs || []);
   const [activeBlog, setActiveBlog] = useState<any | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const glowRef = useMouseGlow()
 
   useEffect(() => {
     if (activeBlog) {
@@ -1094,7 +1140,14 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
   const visibleBlogs = isExpanded ? blogs : blogs.slice(0, 3);
 
   return (
-    <section id="blogs" className="relative py-24 bg-black overflow-hidden">
+    <section id="blogs" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
+      {/* Dynamic Glow Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+        }}
+      />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -1260,6 +1313,7 @@ const decodeStr = (str: string) => {
 
 // Contact Section
 function ContactSection() {
+  const glowRef = useMouseGlow()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -1294,7 +1348,14 @@ function ContactSection() {
   }
 
   return (
-    <section id="contact" className="relative py-24 bg-black overflow-hidden">
+    <section id="contact" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
+      {/* Dynamic Glow Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+        }}
+      />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

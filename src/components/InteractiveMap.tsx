@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import mapData from '@svg-maps/france.regions'
 import { 
@@ -204,14 +204,60 @@ const regionDetails: Record<string, RegionDetail> = {
   }
 }
 
+// Custom Hook to manage dynamic mouse + scroll glow effect relative to section
+function useMouseGlow() {
+  const ref = useRef<HTMLDivElement>(null)
+  const mouseScreenRef = useRef({ x: -1000, y: -1000 })
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const updateGlow = () => {
+      if (mouseScreenRef.current.x === -1000) return
+      const rect = el.getBoundingClientRect()
+      const x = mouseScreenRef.current.x - rect.left
+      const y = mouseScreenRef.current.y - rect.top
+      el.style.setProperty('--mouse-x', `${x}px`)
+      el.style.setProperty('--mouse-y', `${y}px`)
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseScreenRef.current = { x: e.clientX, y: e.clientY }
+      updateGlow()
+    }
+
+    const handleScroll = () => {
+      updateGlow()
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  return ref
+}
+
 export default function InteractiveMap() {
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null)
   const [selectedRegion, setSelectedRegion] = useState<string>('idf') // Default to Paris / Île-de-France
+  const glowRef = useMouseGlow()
 
   const activeRegion = regionDetails[selectedRegion]
 
   return (
-    <section id="students" className="relative py-24 bg-black overflow-hidden">
+    <section id="students" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
+      {/* Dynamic Glow Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
+        }}
+      />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-16">
