@@ -412,8 +412,11 @@ function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
            <motion.div 
-             className="flex items-center gap-3"
+             className="flex items-center gap-3 cursor-pointer"
              whileHover={{ scale: 1.02 }}
+             onClick={() => {
+               document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
+             }}
            >
              <img 
                src="/logo.png" 
@@ -1412,8 +1415,7 @@ function ContactSection() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">Email Us</h3>
-                <p className="text-gray-400">{decodeStr('aW5mb0B2b2xnb3N0dWRlbnQuY29t')}</p>
-                <p className="text-gray-400">{decodeStr('c3VwcG9ydEB2b2xnb3N0dWRlbnQuY29t')}</p>
+                <p className="text-gray-400">Student@volgo-india.com</p>
               </div>
             </div>
 
@@ -1423,8 +1425,8 @@ function ContactSection() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">Call Us</h3>
-                <p className="text-gray-400">{decodeStr('KzkxIDk4NzY1IDQzMjEw')}</p>
-                <p className="text-gray-400">{decodeStr('KzkxIDk4NzY1IDQzMjEx')}</p>
+                <p className="text-gray-400">+91 877 810 877 0</p>
+                <p className="text-gray-400">+91 45 43 233 811</p>
               </div>
             </div>
 
@@ -1434,7 +1436,12 @@ function ContactSection() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">Visit Us</h3>
-                <p className="text-gray-400">Mumbai, Maharashtra, India</p>
+                <p className="text-gray-400">
+                  VolGO Travel (OPC) Private Limited,<br />
+                  36C/5, ST-2, Madurai Main Road,<br />
+                  Nilakkottai, Dindigul 624 208<br />
+                  Tamil Nadu, India
+                </p>
               </div>
             </div>
 
