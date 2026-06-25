@@ -23,7 +23,11 @@ import {
   CheckCircle,
   Menu,
   X,
-  Calendar
+  Calendar,
+  Laptop,
+  Palette,
+  Languages,
+  Sparkles
 } from 'lucide-react'
 
 import InteractiveMap from '@/components/InteractiveMap'
@@ -456,6 +460,15 @@ function HeroSection() {
           Our on-ground experience in France is your path to academic journey
         </motion.h1>
 
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.35, ease: "easeOut" }}
+          className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-8 font-medium italic drop-shadow"
+        >
+          "Step into the World of French Education with Confidence"
+        </motion.p>
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -641,6 +654,22 @@ function AboutSection() {
           </p>
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center max-w-2xl mx-auto mb-16 p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl relative overflow-hidden group shadow-lg"
+        >
+          {/* Subtle gold glow behind card */}
+          <div className="absolute inset-0 bg-[#FFC800]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none" />
+          <Sparkles className="h-6 w-6 text-[#FFC800] mx-auto mb-4 animate-pulse" />
+          <p className="text-xl md:text-2xl font-extrabold text-white leading-relaxed tracking-wide italic">
+            "We don’t just guide students; <br className="hidden md:block" />
+            we <span className="text-[#FFC800] drop-shadow-[0_0_10px_rgba(255,200,0,0.3)]">build futures</span>."
+          </p>
+        </motion.div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <motion.div
@@ -815,6 +844,17 @@ function StudentsSection() {
     }
   ]
 
+  const programs = [
+    { name: "Bachelor's level program", icon: GraduationCap, color: "from-[#FFC800] to-[#FFA500]" },
+    { name: "Master's level program", icon: Award, color: "from-[#FFD700] to-[#FFC800]" },
+    { name: "Doctoral level program", icon: BookOpen, color: "from-[#FFA500] to-[#FF8C00]" },
+    { name: "English Taught program", icon: Globe, color: "from-[#FFC800] to-[#FFD700]" },
+    { name: "Art and Architecture program", icon: Palette, color: "from-[#FFD700] to-[#FFA500]" },
+    { name: "Cultural Short program", icon: Users, color: "from-[#FFA500] to-[#FFC800]" },
+    { name: "Language Stay Program", icon: Languages, color: "from-[#FFC800] to-[#FF8C00]" },
+    { name: "Online Degree Program", icon: Laptop, color: "from-[#FFD700] to-[#FFC800]" },
+  ]
+
   return (
     <section id="students" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
@@ -874,6 +914,44 @@ function StudentsSection() {
                   </div>
                 </CardContent>
               </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* New Programs Sub-section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mt-24 mb-14"
+        >
+          <span className="text-[#FFC800] font-semibold text-lg mb-4 block uppercase tracking-widest">Programs Directory</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+            FINDING YOUR RIGHT PROGRAM IS EASY
+          </h2>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+            Get personalized advice from VolGO to match your interests, skills, and career aspirations with the right programs.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {programs.map((prog, index) => (
+            <motion.div
+              key={prog.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.03 }}
+              className="bg-white/5 backdrop-blur-sm border border-white/10 hover:border-[#FFC800]/40 rounded-2xl p-6 flex flex-col items-center text-center justify-center gap-4 transition-all duration-300 group"
+            >
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${prog.color} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                <prog.icon className="h-6 w-6 text-black" />
+              </div>
+              <span className="text-white font-bold text-sm md:text-base leading-snug">
+                {prog.name}
+              </span>
             </motion.div>
           ))}
         </div>
