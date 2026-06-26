@@ -275,14 +275,26 @@ function useMouseGlow() {
       updateGlow()
     }
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouseScreenRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        updateGlow()
+      }
+    }
+
     const handleScroll = () => {
       updateGlow()
     }
 
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    window.addEventListener('touchstart', handleTouchMove, { passive: true })
     window.addEventListener('scroll', handleScroll, { passive: true })
+    
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchstart', handleTouchMove)
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
@@ -395,6 +407,12 @@ const WhatsappIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+const TelegramIcon = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.498 1.201-.82 1.233-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.415-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.867-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.432.898-.65a62.835 62.835 0 0 1 7.001-2.998c3.342-1.385 4.035-1.626 4.492-1.636z"/>
+  </svg>
+)
+
 // Navigation Component
 function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -447,8 +465,12 @@ function Navigation() {
               <motion.a
                 key={item.name}
                 href={item.href}
-                className="text-black/80 hover:text-[#FFC800] transition-colors font-medium relative group"
+                className="text-black/80 hover:text-[#FFC800] transition-colors font-medium relative group cursor-pointer"
                 whileHover={{ y: -2 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById(item.href.substring(1))?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFC800] transition-all group-hover:w-full" />
@@ -468,20 +490,19 @@ function Navigation() {
 
           {/* Mobile Header Actions */}
           <div className="flex items-center gap-2 md:hidden">
-            <motion.a
+            <a
               href="https://wa.me/918778108770"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Contact us on WhatsApp"
-              className="text-[#25D366] hover:text-[#128C7E] p-2"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+              className="text-[#25D366] hover:text-[#128C7E] p-2 cursor-pointer"
             >
               <WhatsappIcon className="h-6 w-6" />
-            </motion.a>
+            </a>
             <button
-              className="text-black p-2"
+              className="text-black p-2 cursor-pointer"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -504,7 +525,13 @@ function Navigation() {
                   key={item.name}
                   href={item.href}
                   className="block text-black/80 hover:text-[#FFC800] transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsMobileMenuOpen(false);
+                    setTimeout(() => {
+                      document.getElementById(item.href.substring(1))?.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
                 >
                   {item.name}
                 </a>
@@ -1500,7 +1527,9 @@ function ContactSection() {
                 {[
                   { name: 'Facebook', icon: Facebook, url: 'https://www.facebook.com/volgo.students/' },
                   { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/volgo.student/' },
-                  { name: 'YouTube', icon: Youtube, url: 'https://www.youtube.com/@VolGo_Students' }
+                  { name: 'YouTube', icon: Youtube, url: 'https://www.youtube.com/@VolGo_Students' },
+                  { name: 'Telegram', icon: TelegramIcon, url: 'https://t.me/Volgo_students' },
+                  { name: 'WhatsApp', icon: WhatsappIcon, url: 'https://whatsapp.com/channel/0029VbD6U6R0lwgqw0BhZg1h' }
                 ].map((social) => (
                   <motion.a
                     key={social.name}
@@ -1653,10 +1682,19 @@ function Footer() {
 
 // Main Page Component
 export default function HomeClient({ initialBlogs }: { initialBlogs: any[] }) {
+  const [isMobile, setIsMobile] = useState(true) // Default true for mobile-first hydration
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   return (
     <main className="relative bg-black min-h-screen">
-      <ParticleField />
-      <BackgroundPlanes />
+      {!isMobile && <ParticleField />}
+      {!isMobile && <BackgroundPlanes />}
       <Navigation />
       <HeroSection />
       <PathToSuccessSection />
