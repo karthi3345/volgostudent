@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Volgo",
+  title: "VolGo Student",
   description: "Your partner in achieving academic excellence and realizing your dreams of higher education in France.",
   keywords: ["Volgo", "France", "Education", "Study Abroad"],
   authors: [{ name: "Volgo Team" }],
@@ -22,15 +22,15 @@ export const metadata: Metadata = {
     icon: "/images/channels4_profile.webp",
   },
   openGraph: {
-    title: "Volgo",
+    title: "VolGo Student",
     description: "Your partner in achieving academic excellence and realizing your dreams of higher education in France.",
-    url: "https://volgo.com",
-    siteName: "Volgo",
+    url: "https://volgo-student.com",
+    siteName: "VolGo Student",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Volgo",
+    title: "VolGo Student",
     description: "Your partner in achieving academic excellence in France.",
   },
 };
