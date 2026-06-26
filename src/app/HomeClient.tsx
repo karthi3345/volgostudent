@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { 
-  GraduationCap, 
-  MapPin, 
-  BookOpen, 
-  Users, 
+import {
+  GraduationCap,
+  MapPin,
+  BookOpen,
+  Users,
   ChevronDown,
   Mail,
   Phone,
@@ -37,7 +37,7 @@ import InteractiveMap from '@/components/InteractiveMap'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-const DynamicInteractiveMap = dynamic(() => import('@/components/InteractiveMap'), { 
+const DynamicInteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
   ssr: false,
   loading: () => <div className="h-screen w-full flex items-center justify-center text-white/50">Loading Map...</div>
 })
@@ -364,13 +364,13 @@ function BackgroundPlanes() {
     { id: 2, y: '18%', duration: 42, width: '100px', opacity: 0.75, initialDirection: 'rtl', initialX: '75vw' },
     { id: 3, y: '10%', duration: 40, width: '180px', opacity: 0.85, initialDirection: 'ltr', initialX: '15vw' },
     { id: 4, y: '28%', duration: 37, width: '80px', opacity: 0.7, initialDirection: 'rtl', initialX: '60vw' },
-    
+
     // Middle sections (Timeline & Students)
     { id: 5, y: '36%', duration: 38, width: '210px', opacity: 0.85, initialDirection: 'ltr', initialX: '50vw' },
     { id: 6, y: '52%', duration: 45, width: '110px', opacity: 0.75, initialDirection: 'rtl', initialX: '85vw' },
     { id: 7, y: '44%', duration: 44, width: '240px', opacity: 0.85, initialDirection: 'ltr', initialX: '20vw' },
     { id: 8, y: '60%', duration: 41, width: '90px', opacity: 0.7, initialDirection: 'rtl', initialX: '45vw' },
-    
+
     // Lower sections (Map, Reasons, Blogs, Contact)
     { id: 9, y: '68%', duration: 39, width: '170px', opacity: 0.85, initialDirection: 'ltr', initialX: '65vw' },
     { id: 10, y: '82%', duration: 43, width: '120px', opacity: 0.8, initialDirection: 'rtl', initialX: '10vw' },
@@ -391,7 +391,7 @@ function BackgroundPlanes() {
 
 const WhatsappIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={className} fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
   </svg>
 )
 
@@ -408,96 +408,107 @@ function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-    const navItems = [
-      { name: 'Home', href: '#home' },
-      { name: 'About Us', href: '#about' },
-      { name: 'Students', href: '#students' },
-      { name: 'Blogs', href: '#blogs' },
-      { name: 'Contact', href: '#contact' },
-    ]
+  const navItems = [
+    { name: 'Home', href: '#home' },
+    { name: 'About Us', href: '#about' },
+    { name: 'Students', href: '#students' },
+    { name: 'Blogs', href: '#blogs' },
+    { name: 'Contact', href: '#contact' },
+  ]
 
   return (
-     <motion.nav
-       initial={{ y: -100 }}
-       animate={{ y: 0 }}
-       className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-300 ${
-         isScrolled ? 'bg-white shadow-lg' : 'bg-white'
-       }`}
-     >
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-white'
+        }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-           <motion.div 
-             className="flex items-center gap-3 cursor-pointer"
-             whileHover={{ scale: 1.02 }}
-             onClick={() => {
-               document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
-             }}
-           >
-             <img 
-               src="/logo.png" 
-               alt="VolGO Logo" 
-               className="h-12 w-auto"
-             />
-           </motion.div>
-
-           {/* Desktop Navigation */}
-           <div className="hidden md:flex items-center gap-8 justify-end flex-1">
-             {navItems.map((item) => (
-               <motion.a
-                 key={item.name}
-                 href={item.href}
-                 className="text-black/80 hover:text-[#FFC800] transition-colors font-medium relative group"
-                 whileHover={{ y: -2 }}
-               >
-                 {item.name}
-                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFC800] transition-all group-hover:w-full" />
-               </motion.a>
-             ))}
-             <motion.a
-               href="https://wa.me/919500508790"
-               target="_blank"
-               rel="noopener noreferrer"
-               className="text-[#25D366] hover:text-[#128C7E] transition-colors"
-               whileHover={{ scale: 1.1 }}
-             >
-               <WhatsappIcon className="h-6 w-6" />
-             </motion.a>
-           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-black p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          <motion.div
+            className="flex items-center gap-3 cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            onClick={() => {
+              document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+            <img
+              src="/logo.png"
+              alt="VolGO Logo"
+              className="h-12 w-auto"
+            />
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8 justify-end flex-1">
+            {navItems.map((item) => (
+              <motion.a
+                key={item.name}
+                href={item.href}
+                className="text-black/80 hover:text-[#FFC800] transition-colors font-medium relative group"
+                whileHover={{ y: -2 }}
+              >
+                {item.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFC800] transition-all group-hover:w-full" />
+              </motion.a>
+            ))}
+            <motion.a
+              href="https://wa.me/919500508790"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#25D366] hover:text-[#128C7E] transition-colors"
+              whileHover={{ scale: 1.1 }}
+            >
+              <WhatsappIcon className="h-6 w-6" />
+            </motion.a>
+          </div>
+
+          {/* Mobile Header Actions */}
+          <div className="flex items-center gap-2 md:hidden">
+            <motion.a
+              href="https://wa.me/919500508790"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#25D366] hover:text-[#128C7E] p-2"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <WhatsappIcon className="h-6 w-6" />
+            </motion.a>
+            <button
+              className="text-black p-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
-             {/* Mobile Menu */}
-             <AnimatePresence>
-               {isMobileMenuOpen && (
-                 <motion.div
-                   initial={{ opacity: 0, height: 0 }}
-                   animate={{ opacity: 1, height: 'auto' }}
-                   exit={{ opacity: 0, height: 0 }}
-                   className="md:hidden bg-white/95 backdrop-blur-md"
-                 >
-                   <div className="px-4 py-4 space-y-4">
-                     {navItems.map((item) => (
-                       <a
-                         key={item.name}
-                         href={item.href}
-                         className="block text-black/80 hover:text-[#FFC800] transition-colors font-medium py-2"
-                         onClick={() => setIsMobileMenuOpen(false)}
-                       >
-                         {item.name}
-                       </a>
-                     ))}
-                   </div>
-                 </motion.div>
-               )}
-             </AnimatePresence>
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white/95 backdrop-blur-md"
+          >
+            <div className="px-4 py-4 space-y-4">
+              {navItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="block text-black/80 hover:text-[#FFC800] transition-colors font-medium py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }
@@ -509,16 +520,16 @@ function HeroSection() {
     <section id="home" ref={glowRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <Image 
-          src="/images/heropage.webp" 
-          alt="Hero Background" 
+        <Image
+          src="/images/heropage.webp"
+          alt="Hero Background"
           fill
           priority
-          className="object-cover opacity-80"
+          className="object-cover object-[center_bottom] md:object-center opacity-80 scale-100 md:scale-100"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -564,8 +575,8 @@ function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-bold px-8 py-6 text-lg shadow-lg shadow-[#FFC800]/25 transition-all duration-300"
               onClick={() => {
                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -587,15 +598,15 @@ function PathToSuccessSection() {
     <section ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <Image 
-          src="/images/path-to-success-user.webp" 
-          alt="Path to Success Background" 
+        <Image
+          src="/images/path-to-success-user.webp"
+          alt="Path to Success Background"
           fill
-          className="object-cover opacity-80"
+          className="object-cover object-[80%_bottom] md:object-center opacity-80 scale-80 md:scale-100"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -616,11 +627,11 @@ function PathToSuccessSection() {
             Empowering Indian Students
           </h3>
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed max-w-4xl mx-auto">
-            VolGO is your ultimate partner in navigating the journey of higher education in France. 
-            We specialize in providing tailored consultancy services to Indian students, helping you 
-            unlock opportunities in prestigious institutions. Our dedicated team offers expert guidance, 
-            comprehensive resources, and personalized support to ensure you achieve your academic dreams 
-            abroad. With VolGO, you're not just pursuing education; you're embarking on a transformative 
+            VolGO is your ultimate partner in navigating the journey of higher education in France.
+            We specialize in providing tailored consultancy services to Indian students, helping you
+            unlock opportunities in prestigious institutions. Our dedicated team offers expert guidance,
+            comprehensive resources, and personalized support to ensure you achieve your academic dreams
+            abroad. With VolGO, you're not just pursuing education; you're embarking on a transformative
             adventure that shapes your future.
           </p>
         </motion.div>
@@ -696,15 +707,15 @@ function AboutSection() {
     <section id="about" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <Image 
-          src="/images/welcome-volgo.webp" 
-          alt="Welcome to VolGO Background" 
+        <Image
+          src="/images/welcome-volgo.webp"
+          alt="Welcome to VolGO Background"
           fill
-          className="object-cover opacity-80"
+          className="object-cover object-[30%_80%] md:object-center opacity-80 scale-100 md:scale-100"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -724,9 +735,9 @@ function AboutSection() {
             Welcome to <span className="text-[#FFC800]">VolGO</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
-            VolGO is a brand new registered company in 2025 with the vision of being your trusted 
-            partner in achieving academic excellence and realizing your dreams of higher education 
-            in France. With a passion for empowering students, we specialize in providing expert 
+            VolGO is a brand new registered company in 2025 with the vision of being your trusted
+            partner in achieving academic excellence and realizing your dreams of higher education
+            in France. With a passion for empowering students, we specialize in providing expert
             guidance for studying in France.
           </p>
         </motion.div>
@@ -812,15 +823,15 @@ function SafePassageTimeline() {
     <section ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <Image 
-          src="/images/roadmap.webp" 
-          alt="Roadmap Background" 
+        <Image
+          src="/images/roadmap.webp"
+          alt="Roadmap Background"
           fill
-          className="object-cover opacity-80"
+          className="object-cover object-[75%_center] md:object-center opacity-80 scale-15 md:scale-100"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -940,16 +951,16 @@ function StudentsSection() {
       <div className="relative py-24">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image 
-            src="/images/aeroplane.webp" 
-            alt="Quality of Higher Education in France Background" 
+          <Image
+            src="/images/aeroplane.webp"
+            alt="Quality of Higher Education in France Background"
             fill
-            className="object-cover opacity-80"
+            className="object-cover object-[15%_50%] md:object-center opacity-80 scale-55 md:scale-100"
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
         {/* Dynamic Glow Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -968,7 +979,7 @@ function StudentsSection() {
               Quality of Higher Education in France
             </h2>
             <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-              Discover the exceptional opportunities awaiting Indian students in France's 
+              Discover the exceptional opportunities awaiting Indian students in France's
               prestigious educational institutions.
             </p>
           </motion.div>
@@ -1006,16 +1017,16 @@ function StudentsSection() {
       <div ref={glowRef2} className="relative py-24 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image 
-            src="/images/program-bg.webp" 
-            alt="Programs Directory Background" 
+          <Image
+            src="/images/program-bg.webp"
+            alt="Programs Directory Background"
             fill
-            className="object-cover opacity-40"
+            className="object-cover object-[25%_center] md:object-center opacity-40 scale-45 md:scale-100"
           />
           <div className="absolute inset-0 bg-black/60" />
         </div>
         {/* Dynamic Glow Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -1096,15 +1107,15 @@ function ReasonsSection() {
     <section id="reasons" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <Image 
-          src="/images/reasons-to-choose.webp" 
-          alt="Reasons to Choose Background" 
+        <Image
+          src="/images/reasons-to-choose.webp"
+          alt="Reasons to Choose Background"
           fill
-          className="object-cover opacity-80"
+          className="object-cover object-[50%_center] md:object-center opacity-80 scale-25 md:scale-100"
         />
         <div className="absolute inset-0 bg-black/40" />
         {/* Dynamic Glow Overlay */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -1201,7 +1212,7 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
   return (
     <section id="blogs" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Dynamic Glow Overlay */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -1251,7 +1262,7 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
                         <Calendar className="h-4 w-4 text-gray-400" aria-label="Date" />
                         <span className="text-sm text-gray-400">{blog.date}</span>
                       </div>
-                      <h3 
+                      <h3
                         onClick={() => setActiveBlog(blog)}
                         className="text-xl font-bold text-white mb-3 line-clamp-2 hover:text-[#FFC800] cursor-pointer transition-colors"
                       >
@@ -1269,7 +1280,7 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
                       </div>
                       <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
                         <span className="text-sm text-gray-400">{blog.readTime}</span>
-                        <button 
+                        <button
                           onClick={() => setActiveBlog(blog)}
                           className="text-sm text-[#FFC800] font-medium hover:text-[#FFD700] transition-colors cursor-pointer"
                         >
@@ -1326,9 +1337,9 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
             >
 
               {activeBlog.image && (
-                <img 
-                  src={activeBlog.image} 
-                  alt={activeBlog.title} 
+                <img
+                  src={activeBlog.image}
+                  alt={activeBlog.title}
                   className="w-full h-64 md:h-80 object-cover rounded-xl mb-6 border border-stone-300/40"
                 />
               )}
@@ -1350,7 +1361,7 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
                 <span>{activeBlog.readTime}</span>
               </div>
 
-              <div 
+              <div
                 className="prose prose-stone max-w-none google-doc-content text-stone-900 space-y-6 leading-relaxed text-lg pb-10"
                 dangerouslySetInnerHTML={{ __html: activeBlog.content || `<p>${activeBlog.excerpt}</p>` }}
               />
@@ -1382,7 +1393,7 @@ function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // Format message for WhatsApp
     const messageText = `*New Contact Form Submission - VolGO Student*\n\n` +
       `*Name:* ${formData.name}\n` +
@@ -1393,7 +1404,7 @@ function ContactSection() {
     // Obfuscated WhatsApp number (+91 95005 08790) to prevent scraper harvesting
     const target = decodeStr('OTE5NTAwNTA4Nzkw');
     const whatsappUrl = `https://wa.me/${target}?text=${encodeURIComponent(messageText)}`;
-    
+
     // Open WhatsApp Click to Chat URL in a new window/tab
     window.open(whatsappUrl, '_blank');
 
@@ -1409,7 +1420,7 @@ function ContactSection() {
   return (
     <section id="contact" ref={glowRef} className="relative py-24 bg-black overflow-hidden">
       {/* Dynamic Glow Overlay */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: 'radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
@@ -1428,8 +1439,8 @@ function ContactSection() {
             Get in <span className="text-[#FFC800]">Touch</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            We're here to help you succeed! Our team is ready to provide detailed guidance 
-            and answer all your questions, ensuring a smooth and informed journey toward 
+            We're here to help you succeed! Our team is ready to provide detailed guidance
+            and answer all your questions, ensuring a smooth and informed journey toward
             your education in France.
           </p>
         </motion.div>
@@ -1560,8 +1571,8 @@ function ContactSection() {
                     />
                   </div>
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="w-full bg-[#FFC800] hover:bg-[#FFD700] text-black font-bold py-6 text-lg"
                     >
                       Send Message
@@ -1633,22 +1644,23 @@ function Footer() {
 
 // Main Page Component
 export default function HomeClient({ initialBlogs }: { initialBlogs: any[] }) {
-   return (
-      <main className="relative bg-black min-h-screen">
-        <ParticleField />
-        <BackgroundPlanes />
-        <Navigation />
-        <HeroSection />
-        <PathToSuccessSection />
-        <StatsSection />
-        <AboutSection />
-        <SafePassageTimeline />
-        <StudentsSection />
-        <DynamicInteractiveMap />
-        <ReasonsSection />
-        <BlogsSection initialBlogs={initialBlogs} />
-        <ContactSection />
-        <Footer />
-      </main>
-   )
+  return (
+    <main className="relative bg-black min-h-screen">
+      <ParticleField />
+      <BackgroundPlanes />
+      <Navigation />
+      <HeroSection />
+      <PathToSuccessSection />
+      <StatsSection />
+      <AboutSection />
+      <SafePassageTimeline />
+      <StudentsSection />
+      <DynamicInteractiveMap />
+      <ReasonsSection />
+      <BlogsSection initialBlogs={initialBlogs} />
+      <ContactSection />
+      <Footer />
+    </main>
+  )
 }
+
