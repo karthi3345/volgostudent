@@ -433,8 +433,10 @@ function Navigation() {
             }}
           >
             <img
-              src="/logo.png"
-              alt="VolGO Logo"
+              src="/volgo-student-logo-main.png"
+              alt="VolGo Student Consultancy Logo"
+              width={160}
+              height={48}
               className="h-12 w-auto"
             />
           </motion.div>
@@ -453,9 +455,10 @@ function Navigation() {
               </motion.a>
             ))}
             <motion.a
-              href="https://wa.me/919500508790"
+              href="https://wa.me/918778108770"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Contact us on WhatsApp"
               className="text-[#25D366] hover:text-[#128C7E] transition-colors"
               whileHover={{ scale: 1.1 }}
             >
@@ -466,9 +469,10 @@ function Navigation() {
           {/* Mobile Header Actions */}
           <div className="flex items-center gap-2 md:hidden">
             <motion.a
-              href="https://wa.me/919500508790"
+              href="https://wa.me/918778108770"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Contact us on WhatsApp"
               className="text-[#25D366] hover:text-[#128C7E] p-2"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -521,8 +525,8 @@ function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/heropage.webp"
-          alt="Hero Background"
+          src="/images/study-in-france-consultancy-hero.webp"
+          alt="VolGo Student Consultancy - Study Abroad in France"
           fill
           priority
           className="object-cover object-[center_bottom] md:object-center opacity-80 scale-100 md:scale-100"
@@ -599,8 +603,8 @@ function PathToSuccessSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/path-to-success-user.webp"
-          alt="Path to Success Background"
+          src="/images/student-success-path-europe.webp"
+          alt="Student Success Path - Study in Europe from India"
           fill
           className="object-cover object-[80%_bottom] md:object-center opacity-80 scale-80 md:scale-100"
         />
@@ -708,8 +712,8 @@ function AboutSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/welcome-volgo.webp"
-          alt="Welcome to VolGO Background"
+          src="/images/overseas-education-consultant-welcome.webp"
+          alt="Welcome to VolGo Student - Expert Overseas Education Consultant"
           fill
           className="object-cover object-[30%_80%] md:object-center opacity-80 scale-100 md:scale-100"
         />
@@ -824,8 +828,8 @@ function SafePassageTimeline() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/roadmap.webp"
-          alt="Roadmap Background"
+          src="/images/safe-passage-roadmap-french-universities.webp"
+          alt="Safe Passage Roadmap to French Universities"
           fill
           className="object-cover object-[75%_center] md:object-center opacity-80 scale-15 md:scale-100"
         />
@@ -952,8 +956,8 @@ function StudentsSection() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/aeroplane.webp"
-            alt="Quality of Higher Education in France Background"
+            src="/images/quality-higher-education-france.webp"
+            alt="Quality of Higher Education in France - Student Visa Assistance"
             fill
             className="object-cover object-[15%_50%] md:object-center opacity-80 scale-55 md:scale-100"
           />
@@ -1018,8 +1022,8 @@ function StudentsSection() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/program-bg.webp"
-            alt="Programs Directory Background"
+            src="/images/french-university-programs-directory.webp"
+            alt="French University Programs Directory for Indian Students"
             fill
             className="object-cover object-[25%_center] md:object-center opacity-40 scale-45 md:scale-100"
           />
@@ -1108,8 +1112,8 @@ function ReasonsSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/reasons-to-choose.webp"
-          alt="Reasons to Choose Background"
+          src="/images/reasons-to-choose-france.webp"
+          alt="Reasons to Choose France for Higher Education"
           fill
           className="object-cover object-[50%_center] md:object-center opacity-80 scale-25 md:scale-100"
         />
@@ -1402,7 +1406,7 @@ function ContactSection() {
       `*Message:*\n${formData.message}`;
 
     // Obfuscated WhatsApp number (+91 95005 08790) to prevent scraper harvesting
-    const target = decodeStr('OTE5NTAwNTA4Nzkw');
+    const target = decodeStr('OTE4Nzc4MTA4Nzcw');
     const whatsappUrl = `https://wa.me/${target}?text=${encodeURIComponent(messageText)}`;
 
     // Open WhatsApp Click to Chat URL in a new window/tab
@@ -1470,7 +1474,7 @@ function ContactSection() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-1">Call Us</h3>
-                <p className="text-gray-400">+91 87781 0877 0</p>
+                <p className="text-gray-400">+91 87781 08770</p>
                 <p className="text-gray-400">+91 95005 08790</p>
               </div>
             </div>
@@ -1525,8 +1529,9 @@ function ContactSection() {
               <CardContent className="p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="text-white font-medium mb-2 block">Full Name</label>
+                    <label htmlFor="fullName" className="text-white font-medium mb-2 block">Full Name</label>
                     <Input
+                      id="fullName"
                       type="text"
                       placeholder="Enter your name"
                       className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800]"
@@ -1537,8 +1542,9 @@ function ContactSection() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-white font-medium mb-2 block">Email</label>
+                      <label htmlFor="emailAddress" className="text-white font-medium mb-2 block">Email</label>
                       <Input
+                        id="emailAddress"
                         type="email"
                         placeholder="your@email.com"
                         className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800]"
@@ -1548,8 +1554,9 @@ function ContactSection() {
                       />
                     </div>
                     <div>
-                      <label className="text-white font-medium mb-2 block">Phone</label>
+                      <label htmlFor="phoneNumber" className="text-white font-medium mb-2 block">Phone</label>
                       <Input
+                        id="phoneNumber"
                         type="tel"
                         placeholder="+91 XXXXX XXXXX"
                         className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800]"
@@ -1560,8 +1567,9 @@ function ContactSection() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-white font-medium mb-2 block">Message</label>
+                    <label htmlFor="messageContent" className="text-white font-medium mb-2 block">Message</label>
                     <Textarea
+                      id="messageContent"
                       placeholder="How can we help you?"
                       rows={4}
                       className="bg-white/5 border-white/20 text-white placeholder:text-gray-500 focus:border-[#FFC800] resize-none"
@@ -1596,22 +1604,23 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10 mb-12">
           <div>
-            <img src="/logo.png" alt="VolGO Logo" className="h-36 w-auto" />
+            <img src="/volgo-student-logo-main.png" alt="VolGo Student Consultancy Logo" width={200} height={144} className="h-36 w-auto" />
           </div>
 
           <div>
             <h4 className="text-[#B8860B] font-bold text-lg mb-4">Registered Office</h4>
             <p className="text-gray-700 text-sm leading-relaxed">
-              VolGO Student,<br />
-              No. 128 Chetty Street, Heritage Town,<br />
-              Pondicherry - 605 001
+              VolGo Student,<br />
+              36C/5, ST-2, Madurai Main Road,<br />
+              Nilakkottai, Dindigul 624 208<br />
+              Tamil Nadu, India
             </p>
           </div>
 
           <div>
             <h4 className="text-[#B8860B] font-bold text-lg mb-4">Contact Us</h4>
             <div className="text-gray-700 text-sm space-y-1">
-              <p><span className="text-gray-500">Mobile</span><span className="mx-2">:</span>+91 87781 0877 0</p>
+              <p><span className="text-gray-500">Mobile</span><span className="mx-2">:</span>+91 87781 08770</p>
               <p><span className="text-gray-500">Phone</span><span className="mx-2">:</span>+91 95005 08790</p>
               <p><span className="text-gray-500">Email</span><span className="mx-2">:</span>{decodeStr('U3R1ZGVudEB2b2xnby1pbmRpYS5jb20=')}</p>
               <p><span className="text-gray-500">Web</span><span className="mx-3">:</span>www.volgo-student.com</p>
