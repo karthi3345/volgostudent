@@ -653,7 +653,7 @@ function PathToSuccessSection() {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-6xl font-bold text-[#FFC800] mb-4 leading-tight">
-            YOUR PATH TO SUCCESS...
+            Your Path to Success
           </h2>
           <h3 className="text-2xl md:text-3xl font-semibold text-white mb-10">
             Empowering Indian Students
@@ -767,10 +767,7 @@ function AboutSection() {
             Welcome to <span className="text-[#FFC800]">VolGO</span>
           </h2>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
-            VolGO is a brand new registered company in 2025 with the vision of being your trusted
-            partner in achieving academic excellence and realizing your dreams of higher education
-            in France. With a passion for empowering students, we specialize in providing expert
-            guidance for studying in France.
+            At VolGO, we believe every student deserves the opportunity to achieve their global education dreams with confidence. Established with a vision to bridge aspiring students with world-class education in France, we are committed to providing trusted guidance, personalized support, and a seamless pathway to academic success. From choosing the right university to preparing for life in France, we're with you every step of the way.
           </p>
         </motion.div>
 
@@ -1165,8 +1162,8 @@ function ReasonsSection() {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-5xl font-bold text-[#FFC800] mb-4 leading-tight">
-              REASONS TO CHOOSE FRANCE FOR HIGHER STUDIES...
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              Reasons to Choose <span className="text-[#FFC800]">France</span> for Higher Studies
             </h2>
           </motion.div>
 
@@ -1196,8 +1193,8 @@ function ReasonsSection() {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-5xl font-bold text-[#FFC800] mb-4 leading-tight">
-              REASONS TO CHOOSE VOLGO FOR STUDIES IN FRANCE...
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+              Reasons to Choose <span className="text-[#FFC800]">VolGO</span> for Studies in France
             </h2>
           </motion.div>
 
