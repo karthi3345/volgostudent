@@ -30,7 +30,8 @@ import {
   Sparkles,
   Facebook,
   Instagram,
-  Youtube
+  Youtube,
+  Loader2
 } from 'lucide-react'
 
 import InteractiveMap from '@/components/InteractiveMap'
@@ -1626,8 +1627,31 @@ function ContactSection() {
   )
 }
 
-// Footer
 function Footer() {
+  const [activeLegal, setActiveLegal] = useState<{title: string, content: string} | null>(null);
+  const [isLoading, setIsLoading] = useState<'privacy' | 'terms' | null>(null);
+
+  const fetchLegal = async (type: 'privacy' | 'terms') => {
+    setIsLoading(type);
+    try {
+      const res = await fetch(`/api/legal?type=${type}`);
+      const data = await res.json();
+      if (data.content) {
+        setActiveLegal({
+          title: type === 'privacy' ? 'Privacy Policy' : 'Terms and Conditions',
+          content: data.content
+        });
+      } else {
+        alert(data.error || 'Failed to load document');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to load document');
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
   return (
     <footer className="relative bg-white border-t border-gray-200 py-12 z-[110]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1671,11 +1695,63 @@ function Footer() {
             © ALL RIGHTS RESERVED BY VOLGO TRAVEL OPC PRIVATE LIMITED @ 2025
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-gray-600 hover:text-[#B8860B] transition-colors text-sm">Privacy</a>
-            <a href="#" className="text-gray-600 hover:text-[#B8860B] transition-colors text-sm">Terms</a>
+            <button 
+              onClick={(e) => { e.preventDefault(); fetchLegal('privacy'); }}
+              disabled={isLoading !== null}
+              className="text-gray-600 hover:text-[#B8860B] transition-colors text-sm flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            >
+              {isLoading === 'privacy' && <Loader2 className="w-3 h-3 animate-spin" />}
+              Privacy
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); fetchLegal('terms'); }}
+              disabled={isLoading !== null}
+              className="text-gray-600 hover:text-[#B8860B] transition-colors text-sm flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            >
+              {isLoading === 'terms' && <Loader2 className="w-3 h-3 animate-spin" />}
+              Terms
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Legal Modal Overlay */}
+      <AnimatePresence>
+        {activeLegal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[150] flex items-center justify-center p-4 blog-overlay-backdrop backdrop-blur-sm"
+            onClick={() => setActiveLegal(null)}
+          >
+            <button
+              onClick={() => setActiveLegal(null)}
+              className="absolute top-4 right-4 md:top-8 md:right-8 text-stone-300 hover:text-white transition-colors cursor-pointer p-2 bg-black/40 hover:bg-black/65 rounded-full border border-white/15 shadow-xl z-[160]"
+              aria-label="Close document reader"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              className="relative w-full max-w-4xl max-h-[85vh] overflow-y-auto parchment-paper border border-stone-300/60 rounded-2xl p-6 md:p-10 text-stone-900 shadow-2xl scrollbar-thin scrollbar-thumb-stone-300"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-3xl md:text-5xl font-extrabold text-stone-900 mt-2 mb-8 pb-4 border-b border-stone-300/50 leading-tight">
+                {activeLegal.title}
+              </h2>
+
+              <div
+                className="prose prose-stone max-w-none google-doc-content text-stone-900 space-y-6 leading-relaxed text-lg pb-10"
+                dangerouslySetInnerHTML={{ __html: activeLegal.content }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </footer>
   )
 }

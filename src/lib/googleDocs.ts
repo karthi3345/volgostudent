@@ -13,8 +13,18 @@ export interface BlogPost {
 }
 
 let cachedBlogs: BlogPost[] | null = null;
+export let cachedPrivacy: string | null = null;
+export let cachedTerms: string | null = null;
 let lastFetchTime = 0;
 const CACHE_TTL = 30 * 1000; // 30 seconds cache
+
+export async function fetchLegalDoc(type: 'privacy' | 'terms'): Promise<string | null> {
+  const now = Date.now();
+  if (!cachedPrivacy || !cachedTerms || (now - lastFetchTime >= CACHE_TTL)) {
+    await fetchGoogleDocsBlogs(true);
+  }
+  return type === 'privacy' ? cachedPrivacy : cachedTerms;
+}
 
 export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promise<BlogPost[]> {
   // Check if we have valid cached data
@@ -76,7 +86,21 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         ]);
 
         const plainText = textResponse.data as string;
-        const htmlContent = htmlResponse.data as string;
+        let htmlContent = htmlResponse.data as string;
+
+        // Cleanup Google HTML
+        htmlContent = htmlContent.replace(/<body[^>]*>/, '').replace(/<\/body>/, '');
+        htmlContent = htmlContent.replace(/<head>.*<\/head>/s, '');
+        htmlContent = htmlContent.replace(/<style[^>]*>.*?<\/style>/gs, '');
+
+        if (file.name.includes('Privacy Policy') || file.name.includes('[LEGAL] Privacy Policy')) {
+          cachedPrivacy = htmlContent;
+          return null;
+        }
+        if (file.name.includes('Terms and Conditions') || file.name.includes('Terms of Conditions') || file.name.includes('[LEGAL] Terms') || file.name === 'Terms') {
+          cachedTerms = htmlContent;
+          return null;
+        }
 
         // 4. Parse metadata from the top of the plain text file
         let excerpt = '';
