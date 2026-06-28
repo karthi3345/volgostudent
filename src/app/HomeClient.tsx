@@ -1394,7 +1394,7 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
               </div>
 
               <div
-                className="prose prose-stone max-w-none google-doc-content text-stone-900 space-y-6 leading-relaxed text-lg pb-10"
+                className="prose prose-stone max-w-none google-doc-content text-stone-900 pb-10"
                 dangerouslySetInnerHTML={{ __html: activeBlog.content || `<p>${activeBlog.excerpt}</p>` }}
               />
             </motion.div>
@@ -1692,7 +1692,7 @@ function Footer() {
 
         <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-center text-sm">
-            © ALL RIGHTS RESERVED BY VOLGO TRAVEL OPC PRIVATE LIMITED @ 2025
+            © ALL RIGHTS RESERVED BY VOLGO TRAVEL OPC PRIVATE LIMITED @ 2025 - Present
           </p>
           <div className="flex gap-6">
             <button 
@@ -1745,7 +1745,7 @@ function Footer() {
               </h2>
 
               <div
-                className="prose prose-stone max-w-none google-doc-content text-stone-900 space-y-6 leading-relaxed text-lg pb-10"
+                className="prose prose-stone max-w-none google-doc-content text-stone-900 pb-10"
                 dangerouslySetInnerHTML={{ __html: activeLegal.content }}
               />
             </motion.div>

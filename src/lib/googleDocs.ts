@@ -88,17 +88,28 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         const plainText = textResponse.data as string;
         let htmlContent = htmlResponse.data as string;
 
+        // Extract the <style> block from head before removing head
+        const styleMatch = htmlContent.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+        let googleStyles = styleMatch ? styleMatch[1] : '';
+        
+        // Scope body styles to our container and make images responsive
+        googleStyles = googleStyles.replace(/body\s*{/gi, '.google-doc-content {');
+        googleStyles += '\n.google-doc-content img { max-width: 100% !important; height: auto !important; }';
+        const styleTag = `<style>${googleStyles}</style>`;
+
         // Cleanup Google HTML
         htmlContent = htmlContent.replace(/<body[^>]*>/, '').replace(/<\/body>/, '');
-        htmlContent = htmlContent.replace(/<head>.*<\/head>/s, '');
-        htmlContent = htmlContent.replace(/<style[^>]*>.*?<\/style>/gs, '');
+        htmlContent = htmlContent.replace(/<head>[\s\S]*?<\/head>/i, '');
+        
+        // Temporarily hold the styleTag, do NOT inject it yet so it doesn't get destroyed by regex
+        const finalHtmlWithStyles = (html: string) => styleTag + '\n' + html;
 
         if (file.name.includes('Privacy Policy') || file.name.includes('[LEGAL] Privacy Policy')) {
-          cachedPrivacy = htmlContent;
+          cachedPrivacy = finalHtmlWithStyles(htmlContent);
           return null;
         }
         if (file.name.includes('Terms and Conditions') || file.name.includes('Terms of Conditions') || file.name.includes('[LEGAL] Terms') || file.name === 'Terms') {
-          cachedTerms = htmlContent;
+          cachedTerms = finalHtmlWithStyles(htmlContent);
           return null;
         }
 
@@ -168,15 +179,17 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         const bodyMatch = htmlContent.match(/<body[^>]*>([\s\S]*)<\/body>/i);
         let cleanedHtml = bodyMatch ? bodyMatch[1] : htmlContent;
         
-        cleanedHtml = cleanedHtml.replace(/<style[^>]*>([\s\S]*)<\/style>/gi, '');
+        // Remove layout-breaking inline styles to let Tailwind 'prose' handle spacing perfectly,
+        // but keep font-family, font-size, and colors!
+        cleanedHtml = cleanedHtml.replace(/margin(?:-[a-z]+)?\s*:\s*[^;]+;/gi, '');
+        cleanedHtml = cleanedHtml.replace(/padding(?:-[a-z]+)?\s*:\s*[^;]+;/gi, '');
+        cleanedHtml = cleanedHtml.replace(/line-height\s*:\s*[^;"]+;?/gi, '');
+        
         cleanedHtml = cleanedHtml.replace(/<table[^>]*>[\s\S]*?<\/table>/i, '');
 
         if (cleanedHtml.includes('---')) {
           cleanedHtml = cleanedHtml.replace(/^[\s\S]*?<p[^>]*>[\s\S]*?---\s*[\s\S]*?<\/p>/i, '');
         }
-
-        cleanedHtml = cleanedHtml.replace(/<span\s+style="[^"]*">/gi, '<span>');
-        cleanedHtml = cleanedHtml.replace(/<p\s+style="[^"]*">/gi, '<p>');
 
         const titleNormalized = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
         if (titleNormalized.length > 0) {
@@ -198,6 +211,9 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
 
         const wordCount = plainText.split(/\s+/).length;
         const readTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
+
+        // Re-inject the scoped styles safely at the very end
+        cleanedHtml = finalHtmlWithStyles(cleanedHtml);
 
         return {
           id: file.id,
