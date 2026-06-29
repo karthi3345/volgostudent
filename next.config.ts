@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/lander',
+        destination: '/',
+        permanent: true,
+      },
     ];
   },
 };
