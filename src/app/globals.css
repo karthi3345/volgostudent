@@ -232,10 +232,22 @@ html {
   color: white;
 }
 
-/* Google Docs Content Styling Overrides */
+.google-doc-content {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
 .google-doc-content * {
   color: inherit !important;
   background-color: transparent !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+.google-doc-content span {
+  height: auto !important;
 }
 
 .google-doc-content img {
