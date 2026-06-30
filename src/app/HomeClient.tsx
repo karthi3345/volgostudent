@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
+import DOMPurify from 'dompurify'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -1394,8 +1395,13 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
               </div>
 
               <div
+                suppressHydrationWarning
                 className="prose prose-stone max-w-none google-doc-content text-stone-900 pb-10"
-                dangerouslySetInnerHTML={{ __html: activeBlog.content || `<p>${activeBlog.excerpt}</p>` }}
+                dangerouslySetInnerHTML={{ 
+                  __html: typeof window !== 'undefined' 
+                    ? DOMPurify.sanitize(activeBlog.content || `<p>${activeBlog.excerpt}</p>`) 
+                    : (activeBlog.content || `<p>${activeBlog.excerpt}</p>`)
+                }}
               />
             </motion.div>
           </motion.div>
@@ -1745,8 +1751,13 @@ function Footer() {
               </h2>
 
               <div
+                suppressHydrationWarning
                 className="prose prose-stone max-w-none google-doc-content text-stone-900 pb-10"
-                dangerouslySetInnerHTML={{ __html: activeLegal.content }}
+                dangerouslySetInnerHTML={{ 
+                  __html: typeof window !== 'undefined' 
+                    ? DOMPurify.sanitize(activeLegal.content) 
+                    : activeLegal.content 
+                }}
               />
             </motion.div>
           </motion.div>

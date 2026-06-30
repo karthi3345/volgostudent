@@ -1,5 +1,4 @@
 import { google } from 'googleapis';
-import DOMPurify from 'isomorphic-dompurify';
 
 export interface BlogPost {
   id: string | number;
@@ -106,11 +105,11 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         const finalHtmlWithStyles = (html: string) => styleTag + '\n' + html;
 
         if (file.name.includes('Privacy Policy') || file.name.includes('[LEGAL] Privacy Policy')) {
-          cachedPrivacy = finalHtmlWithStyles(DOMPurify.sanitize(htmlContent));
+          cachedPrivacy = finalHtmlWithStyles(htmlContent);
           return null;
         }
         if (file.name.includes('Terms and Conditions') || file.name.includes('Terms of Conditions') || file.name.includes('[LEGAL] Terms') || file.name === 'Terms') {
-          cachedTerms = finalHtmlWithStyles(DOMPurify.sanitize(htmlContent));
+          cachedTerms = finalHtmlWithStyles(htmlContent);
           return null;
         }
 
@@ -214,7 +213,7 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         const readTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
 
         // Re-inject the scoped styles safely at the very end
-        cleanedHtml = finalHtmlWithStyles(DOMPurify.sanitize(cleanedHtml));
+        cleanedHtml = finalHtmlWithStyles(cleanedHtml);
 
         return {
           id: file.id,
