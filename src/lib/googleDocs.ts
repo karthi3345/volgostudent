@@ -1,4 +1,5 @@
 import { google } from 'googleapis';
+import DOMPurify from 'isomorphic-dompurify';
 
 export interface BlogPost {
   id: string | number;
@@ -37,8 +38,8 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
   const privateKey = process.env.GOOGLE_PRIVATE_KEY;
   const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
-  if (!clientEmail || !privateKey || !folderId) {
-    console.warn("Google Docs environment variables are not fully configured.");
+  if (!clientEmail || !privateKey || !folderId || !/^[a-zA-Z0-9_-]+$/.test(folderId)) {
+    console.warn("Google Docs environment variables are not fully configured or folder ID is invalid.");
     return [];
   }
 
@@ -105,11 +106,11 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         const finalHtmlWithStyles = (html: string) => styleTag + '\n' + html;
 
         if (file.name.includes('Privacy Policy') || file.name.includes('[LEGAL] Privacy Policy')) {
-          cachedPrivacy = finalHtmlWithStyles(htmlContent);
+          cachedPrivacy = finalHtmlWithStyles(DOMPurify.sanitize(htmlContent));
           return null;
         }
         if (file.name.includes('Terms and Conditions') || file.name.includes('Terms of Conditions') || file.name.includes('[LEGAL] Terms') || file.name === 'Terms') {
-          cachedTerms = finalHtmlWithStyles(htmlContent);
+          cachedTerms = finalHtmlWithStyles(DOMPurify.sanitize(htmlContent));
           return null;
         }
 
@@ -213,7 +214,7 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         const readTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
 
         // Re-inject the scoped styles safely at the very end
-        cleanedHtml = finalHtmlWithStyles(cleanedHtml);
+        cleanedHtml = finalHtmlWithStyles(DOMPurify.sanitize(cleanedHtml));
 
         return {
           id: file.id,
