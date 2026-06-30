@@ -210,8 +210,11 @@ function useMouseGlow() {
   const mouseScreenRef = useRef({ x: -1000, y: -1000 })
 
   useEffect(() => {
+    // Disable completely on mobile screens to prevent layout thrashing (getBoundingClientRect)
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return;
+
     const el = ref.current
-    if (!el) return
+    if (!el) return;
 
     const updateGlow = () => {
       if (mouseScreenRef.current.x === -1000) return
