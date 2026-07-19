@@ -5,7 +5,7 @@ const cspHeader = `
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com https://themes.googleusercontent.com;
-  img-src 'self' data: blob: https://volgo-student.com https://www.volgo-student.com;
+  img-src 'self' data: blob: https://volgo-student.com https://www.volgo-student.com https://*.googleusercontent.com https://drive.google.com https://drive.usercontent.google.com;
   connect-src 'self' https://volgo-student.com https://www.volgo-student.com;
   frame-src 'self';
 `.replace(/\s{2,}/g, ' ').trim();
@@ -15,6 +15,22 @@ const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
     ignoreBuildErrors: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.usercontent.google.com',
+      },
+    ],
   },
   reactStrictMode: false,
   async redirects() {

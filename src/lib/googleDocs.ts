@@ -123,7 +123,7 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
         const lines = plainText.split('\n').map(l => l.replace(/\r$/, '').trim());
         let contentStartIndex = 0;
 
-        for (let i = 0; i < Math.min(lines.length, 15); i++) {
+        for (let i = 0; i < Math.min(lines.length, 50); i++) {
           const line = lines[i];
           
           if (line.startsWith('Title:')) {
@@ -162,6 +162,13 @@ export async function fetchGoogleDocsBlogs(forceRefresh: boolean = false): Promi
             break;
           }
         }
+
+        // Convert Google Drive share links to stable direct image links automatically
+        const driveMatch = image.match(/(?:\/file\/d\/|id=)([a-zA-Z0-9_-]{25,})/);
+        if (driveMatch && driveMatch[1]) {
+          image = `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+        }
+        console.log("Parsed Image URL:", image);
 
         // Apply fallbacks
         if (!majorTag) {
