@@ -1373,7 +1373,7 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
                 <img
                   src={activeBlog.image}
                   alt={activeBlog.title}
-                  className="w-full h-64 md:h-80 object-cover rounded-xl mb-6 border border-stone-300/40"
+                  className="w-full h-auto max-h-[450px] object-contain rounded-xl mb-6 border border-stone-300/40 bg-stone-100/40"
                 />
               )}
 
