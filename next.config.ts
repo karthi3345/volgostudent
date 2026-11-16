@@ -11,6 +11,8 @@ const cspHeader = `
 `.replace(/\s{2,}/g, ' ').trim();
 
 const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
   output: process.env.OUTPUT_STANDALONE ? "standalone" : undefined,
   typescript: {
     ignoreBuildErrors: true,
@@ -70,6 +72,15 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      {
+        source: '/(images|documents)/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

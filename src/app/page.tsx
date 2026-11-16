@@ -1,8 +1,8 @@
 import { fetchBlogs } from '@/lib/api';
 import HomeClient from './HomeClient';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Enable Incremental Static Regeneration for instant <50ms CDN responses
+export const revalidate = 60;
 
 export default async function Home() {
   const blogs = await fetchBlogs();
