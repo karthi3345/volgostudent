@@ -1,11 +1,10 @@
-import { fetchGoogleDocsBlogs } from '@/lib/googleDocs';
+import { fetchBlogs } from '@/lib/api';
 import HomeClient from './HomeClient';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-export default async function Home(props: { searchParams: Promise<{ refresh?: string }> }) {
-  const searchParams = await props.searchParams;
-  const forceRefresh = searchParams.refresh === 'true';
-  const blogs = await fetchGoogleDocsBlogs(forceRefresh);
+export default async function Home() {
+  const blogs = await fetchBlogs();
   return <HomeClient initialBlogs={blogs} />;
 }

@@ -32,10 +32,14 @@ import {
   Facebook,
   Instagram,
   Youtube,
-  Loader2
+  Loader2,
+  Download,
+  FileText,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw
 } from 'lucide-react'
 
-import InteractiveMap from '@/components/InteractiveMap'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
@@ -1285,6 +1289,18 @@ function BlogsSection({ initialBlogs }: { initialBlogs: any[] }) {
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="bg-white/5 backdrop-blur-sm border-t-4 border-t-[#FFC800] border-x border-b border-white/10 hover:border-[#FFC800]/50 transition-all duration-300 overflow-hidden group flex flex-col h-full">
+                    {blog.image && (
+                      <div 
+                        className="relative w-full h-48 sm:h-52 overflow-hidden cursor-pointer bg-black/40"
+                        onClick={() => setActiveBlog(blog)}
+                      >
+                        <img
+                          src={blog.image}
+                          alt={blog.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
                     <div className="p-6 flex flex-col flex-grow">
                       <div className="flex items-center gap-2 mb-4">
                         <span className="text-xs text-[#FFC800] font-bold uppercase bg-[#FFC800]/10 border border-[#FFC800]/20 rounded-full px-3 py-1">
@@ -1633,26 +1649,51 @@ function ContactSection() {
   )
 }
 
+
 function Footer() {
-  const [activeLegal, setActiveLegal] = useState<{title: string, content: string} | null>(null);
+  const [activeLegal, setActiveLegal] = useState<{
+    title: string;
+    doc_type: string;
+    pdf_url?: string;
+    pages: string[];
+    content: string;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState<'privacy' | 'terms' | null>(null);
+  const [zoom, setZoom] = useState(1);
+
+  const zoomIn = () => setZoom(prev => Math.min(Number((prev + 0.25).toFixed(2)), 2.5));
+  const zoomOut = () => setZoom(prev => Math.max(Number((prev - 0.25).toFixed(2)), 1));
+  const resetZoom = () => setZoom(1);
 
   const fetchLegal = async (type: 'privacy' | 'terms') => {
+    setZoom(1);
     setIsLoading(type);
     try {
-      const res = await fetch(`/api/legal?type=${type}`);
+      const res = await fetch(`/api/legal?type=${type}&t=${Date.now()}`, { cache: 'no-store' });
       const data = await res.json();
-      if (data.content) {
+      const fallbackPdf = type === 'privacy' ? '/documents/privacy/privacy-policy.pdf' : '/documents/terms/terms-and-conditions.pdf';
+      if (data) {
         setActiveLegal({
-          title: type === 'privacy' ? 'Privacy Policy' : 'Terms and Conditions',
-          content: data.content
+          title: data.title || (type === 'privacy' ? 'Privacy Policy' : 'Terms and Conditions'),
+          doc_type: data.doc_type || type,
+          pdf_url: data.pdf_url || fallbackPdf,
+          pages: (data.pages && data.pages.length > 0)
+            ? data.pages
+            : [`/documents/${type}/page-1.jpg`, `/documents/${type}/page-2.jpg`],
+          content: data.content || ''
         });
       } else {
-        alert(data.error || 'Failed to load document');
+        alert('Failed to load document');
       }
     } catch (err) {
       console.error(err);
-      alert('Failed to load document');
+      setActiveLegal({
+        title: type === 'privacy' ? 'Privacy Policy' : 'Terms and Conditions',
+        doc_type: type,
+        pdf_url: type === 'privacy' ? '/documents/privacy/privacy-policy.pdf' : '/documents/terms/terms-and-conditions.pdf',
+        pages: [`/documents/${type}/page-1.jpg`, `/documents/${type}/page-2.jpg`],
+        content: ''
+      });
     } finally {
       setIsLoading(null);
     }
@@ -1728,37 +1769,116 @@ function Footer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[150] flex items-center justify-center p-4 blog-overlay-backdrop backdrop-blur-sm"
-            onClick={() => setActiveLegal(null)}
+            className="fixed inset-0 h-[100dvh] z-[150] flex flex-col items-center justify-between p-2 sm:p-4 md:p-6 blog-overlay-backdrop backdrop-blur-sm"
+            onClick={() => { setActiveLegal(null); setZoom(1); }}
           >
-            <button
-              onClick={() => setActiveLegal(null)}
-              className="absolute top-4 right-4 md:top-8 md:right-8 text-stone-300 hover:text-white transition-colors cursor-pointer p-2 bg-black/40 hover:bg-black/65 rounded-full border border-white/15 shadow-xl z-[160]"
-              aria-label="Close document reader"
+            {/* Top Toolbar */}
+            <div 
+              className="w-full max-w-4xl flex flex-wrap items-center justify-between gap-2 mb-2 px-1 z-[160]"
+              onClick={(e) => e.stopPropagation()}
             >
-              <X className="h-6 w-6" />
-            </button>
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
+                <span className="text-xs sm:text-sm font-semibold text-stone-200 uppercase tracking-wider truncate drop-shadow">
+                  {activeLegal.title}
+                </span>
+                <span className="text-[10px] sm:text-[11px] font-medium bg-white/10 text-stone-300 border border-white/15 px-2 py-0.5 rounded-full select-none flex-shrink-0">
+                  Scanned Copy
+                </span>
+              </div>
 
+              <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
+                {/* Zoom Controls for Mobile */}
+                <div className="flex items-center bg-black/60 backdrop-blur-md rounded-lg border border-white/15 px-1 py-0.5 text-xs text-white">
+                  <button
+                    onClick={zoomOut}
+                    disabled={zoom <= 1}
+                    className="p-1 text-stone-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    title="Zoom out"
+                    aria-label="Zoom out"
+                  >
+                    <ZoomOut className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={resetZoom}
+                    className="px-1.5 py-0.5 text-[10px] sm:text-[11px] font-mono text-stone-300 hover:text-white cursor-pointer select-none"
+                    title="Reset zoom"
+                  >
+                    {Math.round(zoom * 100)}%
+                  </button>
+                  <button
+                    onClick={zoomIn}
+                    disabled={zoom >= 2.5}
+                    className="p-1 text-stone-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    title="Zoom in"
+                    aria-label="Zoom in"
+                  >
+                    <ZoomIn className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {activeLegal.pdf_url && (
+                  <a
+                    href={activeLegal.pdf_url}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 bg-[#FFC800] hover:bg-[#e6b400] text-black font-semibold text-xs rounded-lg shadow-md transition-all hover:scale-105 active:scale-95 cursor-pointer select-none"
+                    title="Download current official PDF"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Download PDF</span>
+                    <span className="sm:hidden text-[11px]">PDF</span>
+                  </a>
+                )}
+
+                <button
+                  onClick={() => { setActiveLegal(null); setZoom(1); }}
+                  className="text-stone-300 hover:text-white transition-colors cursor-pointer p-1.5 bg-black/50 hover:bg-black/75 rounded-full border border-white/20 shadow-xl"
+                  aria-label="Close document reader"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile helper hint */}
+            <div className="w-full max-w-4xl flex items-center justify-between px-2 text-[10px] text-stone-400 sm:hidden select-none -mt-1 mb-1">
+              <span>Scroll down for Page 2</span>
+              <span>Tap or use +/- to zoom</span>
+            </div>
+
+            {/* Document Scroll Area */}
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="relative w-full max-w-4xl max-h-[85vh] overflow-y-auto parchment-paper border border-stone-300/60 rounded-2xl p-6 md:p-10 text-stone-900 shadow-2xl scrollbar-thin scrollbar-thumb-stone-300"
+              className="relative w-full max-w-4xl flex-1 max-h-[88vh] sm:max-h-[85vh] overflow-y-auto overflow-x-auto bg-stone-900/95 sm:bg-stone-900/90 backdrop-blur-md rounded-xl sm:rounded-2xl shadow-2xl p-1 sm:p-4 md:p-6 scrollbar-thin scrollbar-thumb-stone-500 touch-pan-x touch-pan-y"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-3xl md:text-5xl font-extrabold text-stone-900 mt-2 mb-8 pb-4 border-b border-stone-300/50 leading-tight">
-                {activeLegal.title}
-              </h2>
-
-              <div
-                suppressHydrationWarning
-                className="prose prose-stone max-w-none google-doc-content text-stone-900 pb-10"
-                dangerouslySetInnerHTML={{ 
-                  __html: typeof window !== 'undefined' 
-                    ? DOMPurify.sanitize(activeLegal.content) 
-                    : activeLegal.content 
-                }}
-              />
+              <div 
+                className="flex flex-col gap-3 sm:gap-6 items-center mx-auto transition-all duration-200 ease-out"
+                style={{ width: `${zoom * 100}%`, minWidth: `${zoom * 100}%` }}
+              >
+                {activeLegal.pages?.map((pageUrl: string, idx: number) => (
+                  <div 
+                    key={idx} 
+                    className="w-full bg-white rounded-lg sm:rounded-xl shadow-2xl overflow-hidden border border-stone-200 cursor-zoom-in sm:cursor-default"
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+                        setZoom(prev => prev > 1 ? 1 : 1.4);
+                      }
+                    }}
+                  >
+                    <img
+                      src={pageUrl}
+                      alt={`${activeLegal.title} - Page ${idx + 1}`}
+                      className="w-full h-auto object-contain block select-none"
+                      loading="eager"
+                    />
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </motion.div>
         )}

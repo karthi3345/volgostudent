@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
-import { fetchLegalDoc } from '@/lib/googleDocs';
+import { fetchLegalDoc } from '@/lib/api';
 import { rateLimit } from '@/lib/rateLimit';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request: Request) {
   const ip = request.headers.get('x-forwarded-for') || '127.0.0.1';
@@ -16,13 +19,13 @@ export async function GET(request: Request) {
   }
 
   try {
-    const htmlContent = await fetchLegalDoc(type);
+    const doc = await fetchLegalDoc(type);
 
-    if (!htmlContent) {
-      return NextResponse.json({ error: `${type} document not found in Google Drive.` }, { status: 404 });
+    if (!doc) {
+      return NextResponse.json({ error: `${type} document not found.` }, { status: 404 });
     }
 
-    return NextResponse.json({ content: htmlContent });
+    return NextResponse.json(doc);
   } catch (error) {
     console.error(`Error fetching ${type}:`, error);
     return NextResponse.json({ error: 'Internal server error while fetching document.' }, { status: 500 });

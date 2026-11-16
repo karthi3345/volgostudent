@@ -5,14 +5,13 @@ const cspHeader = `
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com https://themes.googleusercontent.com;
-  img-src 'self' data: blob: https://volgo-student.com https://www.volgo-student.com https://*.googleusercontent.com https://drive.google.com https://drive.usercontent.google.com;
-  connect-src 'self' https://volgo-student.com https://www.volgo-student.com;
+  img-src 'self' data: blob: https: http://127.0.0.1:8000 http://localhost:8000;
+  connect-src 'self' https: http://127.0.0.1:8000 http://localhost:8000;
   frame-src 'self';
 `.replace(/\s{2,}/g, ' ').trim();
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  /* config options here */
+  output: process.env.OUTPUT_STANDALONE ? "standalone" : undefined,
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -20,15 +19,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
+        hostname: '**',
       },
       {
-        protocol: 'https',
-        hostname: 'drive.google.com',
+        protocol: 'http',
+        hostname: '127.0.0.1',
       },
       {
-        protocol: 'https',
-        hostname: 'drive.usercontent.google.com',
+        protocol: 'http',
+        hostname: 'localhost',
       },
     ],
   },

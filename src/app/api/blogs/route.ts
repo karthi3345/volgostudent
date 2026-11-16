@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchGoogleDocsBlogs } from '@/lib/googleDocs';
+import { fetchBlogs } from '@/lib/api';
 import { rateLimit } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
@@ -11,9 +11,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const { searchParams } = new URL(request.url);
-    const forceRefresh = searchParams.get('refresh') === 'true';
-    const blogs = await fetchGoogleDocsBlogs(forceRefresh);
+    const blogs = await fetchBlogs();
     return NextResponse.json(blogs);
   } catch (error) {
     console.error('Error inside /api/blogs:', error);
