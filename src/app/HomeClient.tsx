@@ -254,212 +254,1161 @@ const TelegramIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Map Country Hotspot definition
+interface CountryHotspot {
+  id: string
+  name: string
+  leftPct: number
+  topPct: number
+  active: boolean
+  badge: string
+  desc: string
+  programs: string
+  visa: string
+  targetSectionId?: string
+  cx: number
+  cy: number
+  rx: number
+  ry: number
+}
+
+const EUROPE_COUNTRIES: CountryHotspot[] = [
+  {
+    id: "france",
+    name: "France",
+    leftPct: 63.4,
+    topPct: 55.83,
+    active: true,
+    badge: "Active Destination",
+    desc: "Top destination for Indian students! Affordable tuition, 2-year post-study work visa, English-taught programs, and world-class Grandes Écoles.",
+    programs: "1,600+ English Programs",
+    visa: "2-Year Post-Study Visa",
+    targetSectionId: "students", // scrolls directly to France Interactive Map & Universities guide!
+    cx: 1060,
+    cy: 460,
+    rx: 110,
+    ry: 100
+  },
+  {
+    id: "germany",
+    name: "Germany",
+    leftPct: 72.37,
+    topPct: 47.94,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Renowned for tuition-free public universities, world-class engineering, automotive excellence, and high post-study employment.",
+    programs: "Engineering & Tech",
+    visa: "18-Month Job Seeker Visa",
+    targetSectionId: "country-modal",
+    cx: 1210,
+    cy: 375,
+    rx: 75,
+    ry: 90
+  },
+  {
+    id: "spain",
+    name: "Spain",
+    leftPct: 56.22,
+    topPct: 72.21,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Vibrant European culture, affordable living costs, and top-tier triple-accredited business schools in Madrid and Barcelona.",
+    programs: "Business & Management",
+    visa: "1-Year Job Search Visa",
+    targetSectionId: "country-modal",
+    cx: 920,
+    cy: 600,
+    rx: 105,
+    ry: 85
+  },
+  {
+    id: "italy",
+    name: "Italy",
+    leftPct: 74.16,
+    topPct: 64.93,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Centuries of academic heritage, global powerhouse in Fashion, Design, Architecture, and prestigious public universities with regional scholarships.",
+    programs: "Design, Fashion & Arts",
+    visa: "Regional Scholarships",
+    targetSectionId: "country-modal",
+    cx: 1235,
+    cy: 555,
+    rx: 75,
+    ry: 105
+  },
+  {
+    id: "united-kingdom",
+    name: "United Kingdom",
+    leftPct: 60.11,
+    topPct: 37.01,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "World-famous Russell Group universities, intensive 1-year master courses, and vibrant multicultural campuses.",
+    programs: "Russell Group Degrees",
+    visa: "Graduate Route (2 Yrs)",
+    targetSectionId: "country-modal",
+    cx: 1005,
+    cy: 285,
+    rx: 60,
+    ry: 85
+  },
+  {
+    id: "ireland",
+    name: "Ireland",
+    leftPct: 53.53,
+    topPct: 35.19,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "The Silicon Valley of Europe! European HQ for Google, Apple, Meta with strong 2-year post-study work visa and English-speaking environment.",
+    programs: "Tech, Data & Finance",
+    visa: "2-Year Stamp 1G Visa",
+    targetSectionId: "country-modal",
+    cx: 895,
+    cy: 270,
+    rx: 48,
+    ry: 58
+  },
+  {
+    id: "poland",
+    name: "Poland",
+    leftPct: 80.14,
+    topPct: 49.76,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Rapidly growing tech and medical education center in Central Europe with low living costs and recognized English-taught degrees.",
+    programs: "Medicine & IT Programs",
+    visa: "Schengen Work Access",
+    targetSectionId: "country-modal",
+    cx: 1335,
+    cy: 355,
+    rx: 75,
+    ry: 70
+  },
+  {
+    id: "finland",
+    name: "Finland",
+    leftPct: 82.54,
+    topPct: 23.67,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Happiest country with world-leading education system, top innovation scores, clean environment, and fast permanent residency pathway for graduates.",
+    programs: "Innovation & AI",
+    visa: "Post-Study Permanent Residency",
+    targetSectionId: "country-modal",
+    cx: 1380,
+    cy: 160,
+    rx: 65,
+    ry: 95
+  },
+  {
+    id: "sweden",
+    name: "Sweden",
+    leftPct: 75.36,
+    topPct: 24.88,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Home of the Nobel Prize, sustainability leader, world-renowned technology hubs (Spotify, Klarna), and research excellence.",
+    programs: "Sustainability & Tech",
+    visa: "1-Year Job Seeking Visa",
+    targetSectionId: "country-modal",
+    cx: 1255,
+    cy: 180,
+    rx: 55,
+    ry: 100
+  },
+  {
+    id: "norway",
+    name: "Norway",
+    leftPct: 69.68,
+    topPct: 24.27,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Stunning natural beauty, high standard of living, and cutting-edge programs in Renewable Energy, Marine Sciences, and Biotechnology.",
+    programs: "Renewable Energy & Marine",
+    visa: "Nordic Quality of Life",
+    targetSectionId: "country-modal",
+    cx: 1160,
+    cy: 180,
+    rx: 55,
+    ry: 95
+  },
+  {
+    id: "denmark",
+    name: "Denmark",
+    leftPct: 70.57,
+    topPct: 31.55,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Progressive education focusing on critical thinking, collaborative learning, green transition, and thriving pharmaceutical & design sectors.",
+    programs: "Pharma, Tech & Design",
+    visa: "Establishment Card",
+    targetSectionId: "country-modal",
+    cx: 1180,
+    cy: 240,
+    rx: 42,
+    ry: 42
+  },
+  {
+    id: "portugal",
+    name: "Portugal",
+    leftPct: 46.05,
+    topPct: 74.03,
+    active: false,
+    badge: "Consultancy Coming Soon",
+    desc: "Sunny climate, safe welcoming society, vibrant tech startup ecosystem (Web Summit), and historic European universities.",
+    programs: "Business & Tech Startups",
+    visa: "EU Residence Pathway",
+    targetSectionId: "country-modal",
+    cx: 770,
+    cy: 610,
+    rx: 42,
+    ry: 72
+  }
+]
+
+// Sparkles Canvas Component matching reference script.js
+function SparklesCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let stars: Array<{ x: number; y: number; r: number; p: number; s: number }> = []
+    let animationFrameId: number
+
+    const resize = () => {
+      const r = canvas.getBoundingClientRect()
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = r.width * dpr
+      canvas.height = r.height * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+      const count = Math.max(15, Math.round(r.width / 28))
+      stars = Array.from({ length: count }, () => ({
+        x: r.width * (0.40 + Math.random() * 0.60),
+        y: Math.random() * r.height * 0.88,
+        r: Math.random() * 1.5 + 0.4,
+        p: Math.random() * Math.PI * 2,
+        s: Math.random() * 0.02 + 0.007
+      }))
+    }
+
+    const draw = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const w = canvas.width / dpr
+      const h = canvas.height / dpr
+      ctx.clearRect(0, 0, w, h)
+
+      for (const st of stars) {
+        st.p += st.s
+        const a = (Math.sin(st.p) + 1) / 2
+        ctx.beginPath()
+        ctx.fillStyle = `rgba(255, 205, 120, ${a * 0.85})`
+        ctx.shadowColor = 'rgba(255, 190, 90, 0.9)'
+        ctx.shadowBlur = 6
+        ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      animationFrameId = requestAnimationFrame(draw)
+    }
+
+    resize()
+    window.addEventListener('resize', resize)
+    draw()
+
+    return () => {
+      window.removeEventListener('resize', resize)
+      cancelAnimationFrame(animationFrameId)
+    }
+  }, [])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none z-10"
+    />
+  )
+}
+
 // Navigation Component
 function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 15)
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Students', href: '#students' },
-    { name: 'Blogs', href: '#blogs' },
-    { name: 'Contact', href: '#contact' },
-  ]
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleWindowClick = () => setOpenDropdown(null)
+    window.addEventListener('click', handleWindowClick)
+    return () => window.removeEventListener('click', handleWindowClick)
+  }, [])
+
+  const handleCountryClick = (countryId: string) => {
+    setOpenDropdown(null)
+    setIsMobileMenuOpen(false)
+    if (countryId === 'france') {
+      const el = document.getElementById('about') || document.getElementById('contact')
+      el?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      const el = document.getElementById('europe-map-section')
+      el?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-white'
-        }`}
+    <header
+      className={`fixed top-0 left-0 right-0 z-[110] bg-white transition-all duration-300 font-lato ${
+        isScrolled ? 'shadow-md h-[74px] md:h-[92px]' : 'h-[84px] md:h-[116px]'
+      }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12">
-          <motion.div
-            className="flex items-center gap-3 cursor-pointer"
-            whileHover={{ scale: 1.02 }}
-            onClick={() => {
-              document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            <img
-              src="/volgo-student-logo-main.png"
-              alt="VolGo Student Consultancy Logo"
-              width={160}
-              height={48}
-              className="h-12 w-auto"
-            />
-          </motion.div>
+      <div className="w-full h-full px-4 sm:px-6 lg:px-10 flex items-center justify-between">
+        {/* Logo */}
+        <a
+          href="#home"
+          onClick={(e) => {
+            e.preventDefault()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          className="flex items-center cursor-pointer flex-shrink-0"
+          aria-label="VolGO Home"
+        >
+          <img
+            src="/images/logo.png"
+            alt="VolGO – Your Global Education Partner"
+            className={`w-auto object-contain transition-all duration-300 ${
+              isScrolled ? 'h-[54px] md:h-[68px]' : 'h-[64px] md:h-[84px]'
+            }`}
+          />
+        </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8 justify-end flex-1">
-            {navItems.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                className="text-black/80 hover:text-[#FFC800] transition-colors font-medium relative group cursor-pointer"
-                whileHover={{ y: -2 }}
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center justify-center flex-1 px-4">
+          <ul className="flex items-center gap-0">
+            <li>
+              <a
+                href="#home"
                 onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById(item.href.substring(1))?.scrollIntoView({ behavior: 'smooth' });
+                  e.preventDefault()
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
+                className="flex items-center px-4 py-2 text-[18px] font-semibold text-[#d6a548] relative transition-colors"
               >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFC800] transition-all group-hover:w-full" />
-              </motion.a>
-            ))}
-            <motion.a
-              href="https://wa.me/918778108770"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Contact us on WhatsApp"
-              className="text-[#25D366] hover:text-[#128C7E] transition-colors"
-              whileHover={{ scale: 1.1 }}
-            >
-              <WhatsappIcon className="h-6 w-6" />
-            </motion.a>
-          </div>
+                Home
+                <span className="absolute bottom-[-18px] left-4 right-4 h-[2.5px] bg-[#d6a548] rounded-full" />
+              </a>
+            </li>
 
-          {/* Mobile Header Actions */}
-          <div className="flex items-center gap-2 md:hidden">
-            <a
-              href="https://wa.me/918778108770"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Contact us on WhatsApp"
-              className="text-[#25D366] hover:text-[#128C7E] p-2 cursor-pointer"
+            <li>
+              <a
+                href="#about"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="flex items-center px-4 py-2 text-[18px] font-normal text-[#1a1a1a] hover:text-[#d6a548] transition-colors"
+              >
+                About
+              </a>
+            </li>
+
+            {/* Countries Dropdown */}
+            <li
+              className="relative"
+              onClick={(e) => e.stopPropagation()}
+              onMouseEnter={() => setOpenDropdown('countries')}
+              onMouseLeave={() => setOpenDropdown(null)}
             >
-              <WhatsappIcon className="h-6 w-6" />
-            </a>
-            <button
-              className="text-black p-2 cursor-pointer"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle mobile menu"
+              <button
+                type="button"
+                onClick={() => setOpenDropdown(openDropdown === 'countries' ? null : 'countries')}
+                className="flex items-center gap-2 px-4 py-2 text-[18px] font-normal text-[#1a1a1a] hover:text-[#d6a548] transition-colors cursor-pointer"
+              >
+                Countries
+                <ChevronDown
+                  className={`w-4 h-4 text-[#d6a548] transition-transform duration-200 ${
+                    openDropdown === 'countries' ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              <div
+                className={`absolute top-full left-2 min-w-[230px] bg-white rounded-xl shadow-2xl py-2 border-t-[3px] border-[#d6a548] transition-all duration-200 z-50 ${
+                  openDropdown === 'countries'
+                    ? 'opacity-100 visible translate-y-0 pointer-events-auto'
+                    : 'opacity-0 invisible translate-y-2 pointer-events-none'
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => handleCountryClick('france')}
+                  className="w-full text-left px-5 py-2.5 text-[15px] font-semibold text-[#d6a548] bg-[#faf4e8] hover:bg-[#f5ebcf] transition-all flex items-center justify-between"
+                >
+                  <span>France</span>
+                  <span className="text-[11px] bg-[#d6a548] text-black px-2 py-0.5 rounded-full font-bold">Active</span>
+                </button>
+                {['Germany', 'Italy', 'Spain', 'Ireland', 'Poland', 'Finland'].map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => handleCountryClick(c.toLowerCase())}
+                    className="w-full text-left px-5 py-2 text-[15px] text-[#1a1a1a] hover:bg-[#faf4e8] hover:text-[#d6a548] hover:pl-7 transition-all flex items-center justify-between"
+                  >
+                    <span>{c}</span>
+                    <span className="text-[10px] text-stone-400">Soon</span>
+                  </button>
+                ))}
+              </div>
+            </li>
+
+            {/* Services Dropdown */}
+            <li
+              className="relative"
+              onClick={(e) => e.stopPropagation()}
+              onMouseEnter={() => setOpenDropdown('services')}
+              onMouseLeave={() => setOpenDropdown(null)}
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={() => setOpenDropdown(openDropdown === 'services' ? null : 'services')}
+                className="flex items-center gap-2 px-4 py-2 text-[18px] font-normal text-[#1a1a1a] hover:text-[#d6a548] transition-colors cursor-pointer"
+              >
+                Services
+                <ChevronDown
+                  className={`w-4 h-4 text-[#d6a548] transition-transform duration-200 ${
+                    openDropdown === 'services' ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              <div
+                className={`absolute top-full left-2 min-w-[250px] bg-white rounded-xl shadow-2xl py-2 border-t-[3px] border-[#d6a548] transition-all duration-200 z-50 ${
+                  openDropdown === 'services'
+                    ? 'opacity-100 visible translate-y-0 pointer-events-auto'
+                    : 'opacity-0 invisible translate-y-2 pointer-events-none'
+                }`}
+              >
+                {[
+                  'University Selection',
+                  'Application Support',
+                  'Visa Assistance',
+                  'Pre-Departure Guidance'
+                ].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => {
+                      setOpenDropdown(null)
+                      document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                    }}
+                    className="w-full text-left px-5 py-2 text-[15px] text-[#1a1a1a] hover:bg-[#faf4e8] hover:text-[#d6a548] hover:pl-7 transition-all"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </li>
+
+            {/* Resources Dropdown */}
+            <li
+              className="relative"
+              onClick={(e) => e.stopPropagation()}
+              onMouseEnter={() => setOpenDropdown('resources')}
+              onMouseLeave={() => setOpenDropdown(null)}
+            >
+              <button
+                type="button"
+                onClick={() => setOpenDropdown(openDropdown === 'resources' ? null : 'resources')}
+                className="flex items-center gap-2 px-4 py-2 text-[18px] font-normal text-[#1a1a1a] hover:text-[#d6a548] transition-colors cursor-pointer"
+              >
+                Resources
+                <ChevronDown
+                  className={`w-4 h-4 text-[#d6a548] transition-transform duration-200 ${
+                    openDropdown === 'resources' ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+
+              <div
+                className={`absolute top-full left-2 min-w-[210px] bg-white rounded-xl shadow-2xl py-2 border-t-[3px] border-[#d6a548] transition-all duration-200 z-50 ${
+                  openDropdown === 'resources'
+                    ? 'opacity-100 visible translate-y-0 pointer-events-auto'
+                    : 'opacity-0 invisible translate-y-2 pointer-events-none'
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpenDropdown(null)
+                    document.getElementById('blogs')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="w-full text-left px-5 py-2 text-[15px] text-[#1a1a1a] hover:bg-[#faf4e8] hover:text-[#d6a548] hover:pl-7 transition-all"
+                >
+                  Blog & Articles
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpenDropdown(null)
+                    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="w-full text-left px-5 py-2 text-[15px] text-[#1a1a1a] hover:bg-[#faf4e8] hover:text-[#d6a548] hover:pl-7 transition-all"
+                >
+                  Scholarships
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpenDropdown(null)
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="w-full text-left px-5 py-2 text-[15px] text-[#1a1a1a] hover:bg-[#faf4e8] hover:text-[#d6a548] hover:pl-7 transition-all"
+                >
+                  FAQs
+                </button>
+              </div>
+            </li>
+
+            <li>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="flex items-center px-4 py-2 text-[18px] font-normal text-[#1a1a1a] hover:text-[#d6a548] transition-colors"
+              >
+                Contact
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Right CTA Button */}
+        <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
+          <a
+            href="https://wa.me/918778108770"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Contact us on WhatsApp"
+            className="text-[#25D366] hover:text-[#128C7E] transition-all hover:scale-110 p-2"
+          >
+            <WhatsappIcon className="h-6 w-6" />
+          </a>
+          <button
+            type="button"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="inline-flex items-center gap-2.5 bg-[#d8a543] hover:bg-[#e0b153] text-[#1b1b1b] font-bold text-[16px] px-6 h-[46px] rounded-full whitespace-nowrap shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+          >
+            <span>Get Free Consultation</span>
+            <svg
+              className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Header Actions */}
+        <div className="flex lg:hidden items-center gap-2">
+          <a
+            href="https://wa.me/918778108770"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Contact us on WhatsApp"
+            className="text-[#25D366] hover:text-[#128C7E] p-2"
+          >
+            <WhatsappIcon className="h-6 w-6" />
+          </a>
+          <button
+            type="button"
+            className="text-[#14213d] p-2 focus:outline-none cursor-pointer"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            {isMobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Drawer Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/95 backdrop-blur-md"
+            className="lg:hidden bg-white border-t border-gray-100 shadow-2xl px-6 py-6 overflow-y-auto max-h-[85vh]"
           >
-            <div className="px-4 py-4 space-y-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="block text-black/80 hover:text-[#FFC800] transition-colors font-medium py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsMobileMenuOpen(false);
-                    setTimeout(() => {
-                      document.getElementById(item.href.substring(1))?.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                  }}
+            <div className="space-y-3 font-lato">
+              <a
+                href="#home"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setIsMobileMenuOpen(false)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                className="block text-[18px] font-semibold text-[#d6a548] py-2 border-b border-gray-100"
+              >
+                Home
+              </a>
+              <a
+                href="#about"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setIsMobileMenuOpen(false)
+                  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="block text-[18px] font-normal text-[#1a1a1a] py-2 border-b border-gray-100"
+              >
+                About
+              </a>
+
+              {/* Mobile Countries */}
+              <div className="py-2 border-b border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === 'm-countries' ? null : 'm-countries')}
+                  className="w-full flex items-center justify-between text-[18px] text-[#1a1a1a] font-normal"
                 >
-                  {item.name}
-                </a>
-              ))}
+                  <span>Countries</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-[#d6a548] transition-transform ${
+                      openDropdown === 'm-countries' ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                {openDropdown === 'm-countries' && (
+                  <div className="mt-3 pl-4 space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => handleCountryClick('france')}
+                      className="w-full text-left text-[15px] font-semibold text-[#d6a548] py-1 flex items-center justify-between"
+                    >
+                      <span>France</span>
+                      <span className="text-[10px] bg-[#d6a548] text-black px-2 py-0.5 rounded-full font-bold">Active</span>
+                    </button>
+                    {['Germany', 'Italy', 'Spain', 'Ireland', 'Poland', 'Finland'].map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => handleCountryClick(c.toLowerCase())}
+                        className="w-full text-left text-[15px] text-gray-700 py-1"
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Services */}
+              <div className="py-2 border-b border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === 'm-services' ? null : 'm-services')}
+                  className="w-full flex items-center justify-between text-[18px] text-[#1a1a1a] font-normal"
+                >
+                  <span>Services</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-[#d6a548] transition-transform ${
+                      openDropdown === 'm-services' ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                {openDropdown === 'm-services' && (
+                  <div className="mt-3 pl-4 space-y-2 text-[15px] text-gray-700">
+                    {['University Selection', 'Application Support', 'Visa Assistance', 'Pre-Departure Guidance'].map((s) => (
+                      <div
+                        key={s}
+                        onClick={() => {
+                          setIsMobileMenuOpen(false)
+                          document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                        }}
+                        className="py-1 cursor-pointer"
+                      >
+                        {s}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Resources */}
+              <div className="py-2 border-b border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setOpenDropdown(openDropdown === 'm-resources' ? null : 'm-resources')}
+                  className="w-full flex items-center justify-between text-[18px] text-[#1a1a1a] font-normal"
+                >
+                  <span>Resources</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-[#d6a548] transition-transform ${
+                      openDropdown === 'm-resources' ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                {openDropdown === 'm-resources' && (
+                  <div className="mt-3 pl-4 space-y-2 text-[15px] text-gray-700">
+                    <div
+                      onClick={() => {
+                        setIsMobileMenuOpen(false)
+                        document.getElementById('blogs')?.scrollIntoView({ behavior: 'smooth' })
+                      }}
+                      className="py-1 cursor-pointer"
+                    >
+                      Blog
+                    </div>
+                    <div
+                      onClick={() => {
+                        setIsMobileMenuOpen(false)
+                        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                      }}
+                      className="py-1 cursor-pointer"
+                    >
+                      Scholarships
+                    </div>
+                    <div
+                      onClick={() => {
+                        setIsMobileMenuOpen(false)
+                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                      }}
+                      className="py-1 cursor-pointer"
+                    >
+                      FAQs
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setIsMobileMenuOpen(false)
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="block text-[18px] font-normal text-[#1a1a1a] py-2"
+              >
+                Contact
+              </a>
+
+              <div className="pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false)
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="w-full flex items-center justify-center gap-2 bg-[#d8a543] hover:bg-[#e0b153] text-[#1b1b1b] font-bold text-[16px] py-3.5 rounded-full shadow-md"
+                >
+                  <span>Get Free Consultation</span>
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </header>
   )
 }
 
-// Hero Section
+// Hero Section matching reference design with interactive Europe map
 function HeroSection() {
-  const glowRef = useMouseGlow()
+  const [hoveredCountry, setHoveredCountry] = useState<CountryHotspot | null>(null)
+  const [selectedCountryModal, setSelectedCountryModal] = useState<CountryHotspot | null>(null)
+
+  const handleCountryActivate = (country: CountryHotspot) => {
+    if (country.id === 'france') {
+      // Scroll smoothly to the France Interactive Map section
+      const target = document.getElementById('students') || document.getElementById('about')
+      target?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      // Show country destination modal / consultation preview
+      setSelectedCountryModal(country)
+    }
+  }
+
   return (
-    <section id="home" ref={glowRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <section
+      id="home"
+      className="relative w-full aspect-auto lg:aspect-[1672/824] min-h-[660px] lg:min-h-[740px] mt-[84px] md:mt-[116px] bg-[#0b0a09] overflow-hidden select-none"
+    >
+      {/* Background Hero Image */}
+      <div className="absolute inset-0 z-0">
         <Image
-          src="/images/study-in-france-consultancy-hero.webp"
-          alt="VolGo Student Consultancy - Study Abroad in France"
+          src="/images/hero-bg.jpg"
+          alt="Explore Europe - VolGO Education Partner"
           fill
           priority
-          className="object-cover object-[center_bottom] md:object-center opacity-80 scale-100 md:scale-100"
+          sizes="100vw"
+          className="object-cover object-[72%_bottom] md:object-[center_bottom]"
         />
-        <div className="absolute inset-0 bg-black/40" />
-        {/* Dynamic Glow Overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle 450px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 200, 0, 0.22), transparent 70%)'
-          }}
-        />
+        {/* Soft gradient overlay on mobile for readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent lg:from-black/35 lg:via-transparent lg:to-transparent" />
       </div>
-      <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
 
+      {/* Sparkles Canvas Layer */}
+      <SparklesCanvas />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-          className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight drop-shadow-md"
-        >
-          Our on-ground experience in France is your path to academic journey
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.35, ease: "easeOut" }}
-          className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-8 font-medium italic drop-shadow"
-        >
-          "Step into the World of French Education with Confidence"
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
-          className="mb-8"
-        >
-          <span className="inline-block px-3 py-1 bg-[#FFC800]/20 border border-[#FFC800]/30 rounded-full text-[#FFC800] text-xs font-medium backdrop-blur-sm shadow-[0_0_15px_rgba(255,200,0,0.1)]">
-            Empowering Indian Students
-          </span>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              size="lg"
-              className="bg-[#FFC800] hover:bg-[#FFD700] text-black font-bold px-8 py-6 text-lg shadow-lg shadow-[#FFC800]/25 transition-all duration-300"
-              onClick={() => {
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+      {/* SVG Illumination Layer: When hovering over any country, lights up with warm amber glow just like France */}
+      <svg
+        viewBox="0 0 1672 824"
+        preserveAspectRatio="xMidYMid slice"
+        className="absolute inset-0 w-full h-full pointer-events-none z-10 transition-opacity duration-300"
+      >
+        <defs>
+          {EUROPE_COUNTRIES.map((c) => (
+            <radialGradient
+              key={`grad-${c.id}`}
+              id={`amber-glow-${c.id}`}
+              cx="50%"
+              cy="50%"
+              r="50%"
+              fx="50%"
+              fy="50%"
             >
-              Start Your Journey
-              <Send className="ml-2 h-5 w-5" />
-            </Button>
-          </motion.div>
-        </motion.div>
+              <stop offset="0%" stopColor="#d6a548" stopOpacity="0.85" />
+              <stop offset="45%" stopColor="#d6a548" stopOpacity="0.55" />
+              <stop offset="75%" stopColor="#e6c27a" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#d6a548" stopOpacity="0" />
+            </radialGradient>
+          ))}
+          <filter id="country-blur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="8" />
+          </filter>
+        </defs>
+
+        {/* Dynamic Country Glow on hover */}
+        {EUROPE_COUNTRIES.map((c) => {
+          const isHovered = hoveredCountry?.id === c.id
+          if (!isHovered && c.id !== 'france') return null
+
+          return (
+            <g key={`glow-group-${c.id}`}>
+              {/* Soft radial ambient illumination */}
+              <ellipse
+                cx={c.cx}
+                cy={c.cy}
+                rx={c.rx}
+                ry={c.ry}
+                fill={`url(#amber-glow-${c.id})`}
+                filter="url(#country-blur)"
+                style={{ mixBlendMode: 'screen' }}
+                className="transition-all duration-300 pointer-events-none"
+              />
+              {/* Precise bright highlight circle */}
+              <ellipse
+                cx={c.cx}
+                cy={c.cy}
+                rx={Math.round(c.rx * 0.75)}
+                ry={Math.round(c.ry * 0.75)}
+                fill={`url(#amber-glow-${c.id})`}
+                style={{ mixBlendMode: 'color-dodge' }}
+                className="transition-all duration-300 pointer-events-none opacity-80"
+              />
+            </g>
+          )
+        })}
+      </svg>
+
+      {/* Interactive Map Hotspots Overlay (Desktop / Tablet) */}
+      <div className="absolute inset-0 pointer-events-none z-20">
+        {EUROPE_COUNTRIES.map((country) => {
+          const isFrance = country.id === 'france'
+          const isHovered = hoveredCountry?.id === country.id
+
+          return (
+            <div
+              key={country.id}
+              style={{
+                left: `${country.leftPct}%`,
+                top: `${country.topPct}%`,
+                transform: 'translate(-50%, -50%)'
+              }}
+              className="absolute pointer-events-auto"
+            >
+              {/* Interactive Target Circle / Pin */}
+              <div
+                className="relative group cursor-pointer"
+                onMouseEnter={() => setHoveredCountry(country)}
+                onMouseLeave={() => setHoveredCountry(null)}
+                onClick={() => handleCountryActivate(country)}
+              >
+                {/* Glow ring for France or Hovered state */}
+                <div
+                  className={`absolute -inset-3 rounded-full transition-all duration-300 ${
+                    isFrance
+                      ? 'bg-[#d6a548]/30 map-pin-pulse shadow-[0_0_25px_#d6a548]'
+                      : isHovered
+                      ? 'bg-[#d6a548]/40 scale-125 shadow-[0_0_20px_#e6c27a]'
+                      : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#d6a548]/25'
+                  }`}
+                />
+
+                {/* Pin Core */}
+                <div
+                  className={`relative flex items-center justify-center rounded-full transition-all duration-300 border ${
+                    isFrance
+                      ? 'w-6 h-6 md:w-8 md:h-8 bg-[#d6a548] border-white shadow-lg text-black font-extrabold ring-4 ring-[#d6a548]/40'
+                      : isHovered
+                      ? 'w-6 h-6 md:w-7 md:h-7 bg-[#d6a548] border-white scale-110 shadow-md ring-2 ring-[#d6a548]/50'
+                      : 'w-4 h-4 md:w-5 md:h-5 bg-black/60 border-[#d6a548]/80 group-hover:bg-[#d6a548] group-hover:border-white'
+                  }`}
+                >
+                  {isFrance ? (
+                    <GraduationCap className="w-3.5 h-3.5 md:w-4 md:h-4 text-black" />
+                  ) : (
+                    <div className="w-1.5 h-1.5 bg-[#d6a548] group-hover:bg-black rounded-full" />
+                  )}
+                </div>
+
+                {/* Country Label tag */}
+                <div
+                  className={`absolute left-1/2 -bottom-6 -translate-x-1/2 px-2 py-0.5 rounded text-[11px] font-bold tracking-wide whitespace-nowrap transition-all duration-200 pointer-events-none ${
+                    isFrance
+                      ? 'bg-[#d6a548] text-black shadow-md opacity-100'
+                      : isHovered
+                      ? 'bg-black/90 text-[#e6c27a] border border-[#d6a548]/50 opacity-100 translate-y-0.5'
+                      : 'opacity-0 group-hover:opacity-100 bg-black/80 text-white'
+                  }`}
+                >
+                  {country.name}
+                </div>
+
+                {/* Hover Tooltip / Detail Card */}
+                {isHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute bottom-9 left-1/2 -translate-x-1/2 w-64 md:w-72 p-3.5 rounded-xl bg-stone-950/95 border border-[#d6a548]/60 shadow-[0_12px_35px_rgba(0,0,0,0.85)] backdrop-blur-md z-50 text-left pointer-events-none"
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className="font-lora text-[17px] font-bold text-white flex items-center gap-1.5">
+                        <MapPin className="w-4 h-4 text-[#d6a548]" />
+                        {country.name}
+                      </span>
+                      <span
+                        className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                          country.active
+                            ? 'bg-[#d6a548] text-black font-bold'
+                            : 'bg-white/10 text-stone-300'
+                        }`}
+                      >
+                        {country.badge}
+                      </span>
+                    </div>
+
+                    <p className="text-[12px] text-stone-300 leading-relaxed mb-2 font-lato">
+                      {country.desc}
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-white/10 text-[11px] text-stone-400 font-lato">
+                      <div>
+                        <span className="block text-[9px] uppercase tracking-wider text-[#d6a548]">Focus</span>
+                        <span className="text-white font-medium">{country.programs}</span>
+                      </div>
+                      <div>
+                        <span className="block text-[9px] uppercase tracking-wider text-[#d6a548]">Post-Study</span>
+                        <span className="text-white font-medium">{country.visa}</span>
+                      </div>
+                    </div>
+
+                    {country.active ? (
+                      <div className="mt-2.5 pt-2 border-t border-[#d6a548]/30 flex items-center justify-between text-[11px] font-bold text-[#d6a548]">
+                        <span>Click to view France map & cities</span>
+                        <Send className="w-3.5 h-3.5" />
+                      </div>
+                    ) : (
+                      <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-semibold text-[#e6c27a]">
+                        <span>Click to view details</span>
+                        <ChevronDown className="w-3 h-3 -rotate-90" />
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          )
+        })}
       </div>
+
+      {/* Hero Content on the Left */}
+      <div className="relative z-20 h-full flex items-center px-6 sm:px-12 lg:px-24 py-16 lg:py-24 max-w-7xl mx-auto">
+        <div className="max-w-2xl text-left font-lato">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="font-lora font-medium text-white text-[42px] sm:text-[58px] lg:text-[76px] leading-[1.05] tracking-tight drop-shadow-md"
+          >
+            Explore Europe
+          </motion.h1>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.35 }}
+            className="font-lora italic font-semibold text-[#e6c27a] text-[26px] sm:text-[36px] lg:text-[46px] mt-2 lg:mt-3 leading-tight drop-shadow"
+          >
+            Your Dream. Our Guidance.
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.55 }}
+            className="text-stone-200 text-[16px] sm:text-[18px] lg:text-[22px] leading-relaxed mt-5 lg:mt-8 max-w-xl font-normal drop-shadow"
+          >
+            Discover top universities, exciting opportunities <br className="hidden sm:inline" />
+            and a brighter future across Europe.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.75 }}
+            className="mt-7 lg:mt-10 flex flex-wrap items-center gap-4"
+          >
+            <button
+              type="button"
+              onClick={() => {
+                const target = document.getElementById('students') || document.getElementById('about')
+                target?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="inline-flex items-center gap-3 px-8 h-[52px] lg:h-[58px] border-2 border-[#d6a548] rounded-full text-[#e6c27a] hover:bg-[#d6a548] hover:text-[#111] text-[16px] lg:text-[18px] font-bold tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(214,165,72,0.25)] hover:shadow-[0_0_30px_rgba(214,165,72,0.6)] cursor-pointer group"
+            >
+              <span>Start Your Journey</span>
+              <svg
+                className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </button>
+
+            {/* Quick France Pill Badge */}
+            <button
+              type="button"
+              onClick={() => handleCountryActivate(EUROPE_COUNTRIES[0])}
+              className="inline-flex items-center gap-2 px-5 h-[52px] lg:h-[58px] bg-black/50 hover:bg-black/75 border border-[#d6a548]/40 hover:border-[#d6a548] rounded-full text-white text-[14px] lg:text-[15px] font-medium backdrop-blur-sm transition-all cursor-pointer group"
+            >
+              <span className="w-2.5 h-2.5 rounded-full bg-[#d6a548] animate-pulse" />
+              <span>Study in France Direct Pathway</span>
+              <ChevronDown className="w-4 h-4 text-[#d6a548] -rotate-90 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Country Detail Modal for other countries */}
+      <AnimatePresence>
+        {selectedCountryModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setSelectedCountryModal(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-lg bg-stone-900 border border-[#d6a548]/50 rounded-2xl p-6 sm:p-8 shadow-2xl text-left"
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedCountryModal(null)}
+                className="absolute top-4 right-4 text-stone-400 hover:text-white p-2 rounded-full hover:bg-stone-800 transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-[#d6a548]/20 border border-[#d6a548]/40 flex items-center justify-center text-[#d6a548]">
+                  <Globe className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-lora text-2xl font-bold text-white">
+                    {selectedCountryModal.name}
+                  </h3>
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/10 text-[#e6c27a] inline-block mt-1">
+                    {selectedCountryModal.badge}
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-stone-300 text-sm sm:text-base leading-relaxed mb-6 font-lato">
+                {selectedCountryModal.desc}
+              </p>
+
+              <div className="grid grid-cols-2 gap-3 p-4 bg-stone-950/60 rounded-xl border border-white/5 mb-6 text-sm font-lato">
+                <div>
+                  <span className="text-xs uppercase text-[#d6a548] font-bold block mb-1">Key Disciplines</span>
+                  <span className="text-white font-medium">{selectedCountryModal.programs}</span>
+                </div>
+                <div>
+                  <span className="text-xs uppercase text-[#d6a548] font-bold block mb-1">Post-Study Visa</span>
+                  <span className="text-white font-medium">{selectedCountryModal.visa}</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedCountryModal(null)
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="flex-1 bg-[#d8a543] hover:bg-[#e0b153] text-black font-bold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg shadow-[#d8a543]/20"
+                >
+                  <span>Pre-Register for {selectedCountryModal.name}</span>
+                  <Send className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedCountryModal(null)
+                    document.getElementById('students')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="px-5 py-3.5 rounded-xl border border-white/20 hover:border-[#d6a548] text-white hover:text-[#d6a548] text-sm font-semibold transition-all cursor-pointer text-center"
+                >
+                  Explore France Now
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
