@@ -1105,27 +1105,36 @@ function HeroSection() {
           if (!isHovered) return null
 
           return (
-            <g key={`glow-group-${c.id}`} className="transition-opacity duration-300">
-              {/* Soft radial ambient illumination matching France's signature gold */}
+            <g key={`glow-group-${c.id}`} className="transition-all duration-300">
+              {/* Massive ambient golden glow */}
+              <ellipse
+                cx={c.cx}
+                cy={c.cy}
+                rx={Math.round(c.rx * 1.5)}
+                ry={Math.round(c.ry * 1.5)}
+                fill={`url(#amber-glow-${c.id})`}
+                filter="url(#country-blur)"
+                className="pointer-events-none opacity-90"
+              />
+              {/* Vivid warm amber fill directly on country area */}
               <ellipse
                 cx={c.cx}
                 cy={c.cy}
                 rx={c.rx}
                 ry={c.ry}
-                fill={`url(#amber-glow-${c.id})`}
+                fill="#d6a548"
                 filter="url(#country-blur)"
-                style={{ mixBlendMode: 'screen' }}
-                className="pointer-events-none"
+                className="pointer-events-none opacity-40"
               />
               {/* Concentrated bright core highlight */}
               <ellipse
                 cx={c.cx}
                 cy={c.cy}
-                rx={Math.round(c.rx * 0.72)}
-                ry={Math.round(c.ry * 0.72)}
-                fill={`url(#amber-glow-${c.id})`}
-                style={{ mixBlendMode: 'color-dodge' }}
-                className="pointer-events-none opacity-90"
+                rx={Math.round(c.rx * 0.75)}
+                ry={Math.round(c.ry * 0.75)}
+                fill="#ffd57a"
+                filter="url(#country-blur)"
+                className="pointer-events-none opacity-50"
               />
             </g>
           )
@@ -1133,7 +1142,7 @@ function HeroSection() {
       </svg>
 
       {/* Interactive Map Hotspots Overlay (Desktop / Tablet) */}
-      <div className="absolute inset-0 pointer-events-none z-20">
+      <div className="absolute inset-0 z-20">
         {EUROPE_COUNTRIES.map((country) => {
           const isHovered = hoveredCountry?.id === country.id
 
@@ -1143,23 +1152,23 @@ function HeroSection() {
               style={{
                 left: `${country.leftPct}%`,
                 top: `${country.topPct}%`,
+                width: `${Math.max(64, country.rx * 1.6)}px`,
+                height: `${Math.max(64, country.ry * 1.6)}px`,
                 transform: 'translate(-50%, -50%)'
               }}
-              className="absolute pointer-events-auto"
+              className="absolute flex items-center justify-center cursor-pointer pointer-events-auto"
+              onMouseEnter={() => setHoveredCountry(country)}
+              onMouseLeave={() => setHoveredCountry(null)}
+              onClick={() => handleCountryActivate(country)}
             >
               {/* Interactive Target Circle / Pin */}
-              <div
-                className="relative group cursor-pointer"
-                onMouseEnter={() => setHoveredCountry(country)}
-                onMouseLeave={() => setHoveredCountry(null)}
-                onClick={() => handleCountryActivate(country)}
-              >
+              <div className="relative group flex items-center justify-center">
                 {/* Glow ring on hover */}
                 <div
                   className={`absolute -inset-3 rounded-full transition-all duration-300 ${
                     isHovered
-                      ? 'bg-[#d6a548]/45 scale-125 shadow-[0_0_25px_#d6a548] opacity-100'
-                      : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#d6a548]/25'
+                      ? 'bg-[#d6a548]/50 scale-125 shadow-[0_0_25px_#d6a548] opacity-100'
+                      : 'opacity-0 group-hover:opacity-100 group-hover:bg-[#d6a548]/30'
                   }`}
                 />
 
@@ -1167,20 +1176,20 @@ function HeroSection() {
                 <div
                   className={`relative flex items-center justify-center rounded-full transition-all duration-300 border ${
                     isHovered
-                      ? 'w-6 h-6 md:w-8 md:h-8 bg-[#d6a548] border-white scale-110 shadow-lg ring-4 ring-[#d6a548]/40 text-black font-extrabold'
+                      ? 'w-7 h-7 md:w-9 md:h-9 bg-[#d6a548] border-white scale-110 shadow-lg ring-4 ring-[#d6a548]/50 text-black font-extrabold'
                       : 'w-4 h-4 md:w-5 md:h-5 bg-black/60 border-[#d6a548]/80 group-hover:bg-[#d6a548] group-hover:border-white'
                   }`}
                 >
                   {country.id === 'france' && isHovered ? (
-                    <GraduationCap className="w-3.5 h-3.5 md:w-4 md:h-4 text-black" />
+                    <GraduationCap className="w-4 h-4 text-black" />
                   ) : (
-                    <div className="w-1.5 h-1.5 bg-[#d6a548] group-hover:bg-black rounded-full" />
+                    <div className="w-2 h-2 bg-[#d6a548] group-hover:bg-black rounded-full" />
                   )}
                 </div>
 
                 {/* Country Label tag */}
                 <div
-                  className={`absolute left-1/2 -bottom-6 -translate-x-1/2 px-2 py-0.5 rounded text-[11px] font-bold tracking-wide whitespace-nowrap transition-all duration-200 pointer-events-none ${
+                  className={`absolute left-1/2 -bottom-6 -translate-x-1/2 px-2.5 py-0.5 rounded text-[11px] font-bold tracking-wide whitespace-nowrap transition-all duration-200 pointer-events-none ${
                     isHovered
                       ? 'bg-[#d6a548] text-black shadow-md opacity-100 translate-y-0.5'
                       : 'opacity-0 group-hover:opacity-100 bg-black/80 text-white'
